@@ -80,7 +80,7 @@ yarn add by-node-env
 
 ## Note
 
-`by-node-env` is essentially a clone of [`per-env`](https://www.npmjs.com/package/per-env) with some notable fixes in 1.0.0:
+`by-node-env` is essentially a clone of [`per-env`](https://www.npmjs.com/package/per-env) with some notable fixes:
 
 - Windows compatibility.
 - Yarn compatibility.

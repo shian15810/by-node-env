@@ -1,6 +1,6 @@
 {
   "name": "by-node-env",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Run package.json scripts by NODE_ENV.",
   "bin": {
     "by-node-env": "./bin/by-node-env"
