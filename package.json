@@ -2,88 +2,49 @@
   "name": "by-node-env",
   "version": "1.0.2",
   "description": "Run package.json scripts by NODE_ENV.",
-  "bin": {
-    "by-node-env": "./bin/by-node-env"
-  },
+  "keywords": [
+    "development",
+    "env",
+    "if-env",
+    "is-ci",
+    "node",
+    "node-env",
+    "npm",
+    "nps",
+    "nps-utils",
+    "p-s",
+    "package-json",
+    "per-env",
+    "production",
+    "run",
+    "run-script",
+    "scripts",
+    "staging",
+    "test",
+    "yarn",
+    "yo-env"
+  ],
+  "homepage": "https://github.com/shian15810/by-node-env#readme",
+  "bugs": "https://github.com/shian15810/by-node-env/issues",
+  "license": "MIT",
+  "author": "Chuah Chee Shian <shian15810@gmail.com>",
+  "bin": "./bin/by-node-env",
+  "repository": "https://github.com/shian15810/by-node-env.git",
   "scripts": {
-    "test": "NODE_ENV=development ./bin/by-node-env && NODE_ENV=test ./bin/by-node-env",
-    "pretest:development": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
-    "test:development": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
-    "posttest:development": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
-    "pretest:test": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
-    "test:test": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
-    "posttest:test": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}"
+    "test": "./bin/by-node-env && NODE_ENV=test ./bin/by-node-env",
+    "pretest:development": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
+    "test:development": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
+    "posttest:development": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
+    "pretest:test": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
+    "test:test": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
+    "posttest:test": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}"
+  },
+  "dependencies": {
+    "cross-spawn": "^6.0.5"
   },
   "by-node-env": {
     "development": {
-      "CUSTOM_VALUE": "dev"
+      "CUSTOM_ENV": "dev"
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shian15810/by-node-env.git"
-  },
-  "keywords": [
-    "build",
-    "by-env",
-    "by-node-env",
-    "by-node",
-    "by",
-    "concurrently",
-    "cross-spawn",
-    "deploy",
-    "dev",
-    "development",
-    "env",
-    "environment",
-    "if-env",
-    "is-ci",
-    "NODE_ENV",
-    "node_env",
-    "node-env",
-    "node",
-    "npm-package-scripts",
-    "npm-run-all",
-    "npm-run-script",
-    "npm-scripts",
-    "npm",
-    "nps-utils",
-    "nps",
-    "p-s",
-    "package.json",
-    "package",
-    "per-env",
-    "postbuild",
-    "postdeploy",
-    "poststart",
-    "posttest",
-    "prebuild",
-    "predeploy",
-    "prestart",
-    "pretest",
-    "process.env",
-    "process",
-    "prod",
-    "production",
-    "run",
-    "script",
-    "scripts",
-    "spawn",
-    "staging",
-    "start",
-    "test",
-    "watch",
-    "windows",
-    "yarn",
-    "yarnpkg"
-  ],
-  "author": "Chuah Chee Shian <shian15810@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/shian15810/by-node-env/issues"
-  },
-  "homepage": "https://github.com/shian15810/by-node-env#readme",
-  "dependencies": {
-    "cross-spawn": "^6.0.5"
   }
 }
