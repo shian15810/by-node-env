@@ -1,12 +1,12 @@
 {
-  "name": "runenv",
+  "name": "by-node-env",
   "version": "1.0.0",
   "description": "Run package.json scripts depending on NODE_ENV.",
   "bin": {
-    "runenv": "./bin/runenv"
+    "by-node-env": "./bin/by-node-env"
   },
   "scripts": {
-    "test": "NODE_ENV=development ./bin/runenv && NODE_ENV=test ./bin/runenv",
+    "test": "NODE_ENV=development ./bin/by-node-env && NODE_ENV=test ./bin/by-node-env",
     "pretest:development": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
     "test:development": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
     "posttest:development": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
@@ -14,14 +14,14 @@
     "test:test": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
     "posttest:test": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}"
   },
-  "runenv": {
+  "by-node-env": {
     "development": {
       "CUSTOM_VALUE": "dev"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shian15810/runenv.git"
+    "url": "git+https://github.com/shian15810/by-node-env.git"
   },
   "keywords": [
     "build",
@@ -60,7 +60,7 @@
     "process",
     "prod",
     "production",
-    "runenv",
+    "by-node-env",
     "run",
     "script",
     "scripts",
@@ -76,9 +76,9 @@
   "author": "Chuah Chee Shian <shian15810@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/shian15810/runenv/issues"
+    "url": "https://github.com/shian15810/by-node-env/issues"
   },
-  "homepage": "https://github.com/shian15810/runenv#readme",
+  "homepage": "https://github.com/shian15810/by-node-env#readme",
   "dependencies": {
     "cross-spawn": "^6.0.5"
   }
