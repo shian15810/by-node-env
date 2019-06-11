@@ -1,25 +1,39 @@
 # run-env
 
-> Clean up your `package.json` with per-`NODE_ENV` npm scripts.
+Run package.json scripts depending on `NODE_ENV`.
 
 [![travis build](https://img.shields.io/travis/shian15810/run-env.svg)](https://travis-ci.org/shian15810/run-env)
 [![version](https://img.shields.io/npm/v/run-env.svg)](http://npm.im/run-env)
 [![downloads](https://img.shields.io/npm/dm/run-env.svg)](http://npm-stat.com/charts.html?package=run-env)
 [![MIT License](https://img.shields.io/npm/l/run-env.svg)](http://opensource.org/licenses/MIT)
 
+## Installation
 
-### Features
+Install with npm:
+
+```sh
+npm install run-env
+```
+
+Install with Yarn:
+
+```sh
+yarn add run-env
+```
+
+## Features
 
 - [x] Defaults `NODE_ENV` to `development`.
 - [x] Customize `process.env` run-environment.
 - [x] Clearer, concise scripts.
 - [x] No more Bash-scripting in `package.json`.
+- [x] Works on Linux, macOS and Windows.
+- [x] Compatible with Yarn and npm.
 - [x] Simplify your workflow:
-  1. `npm install`
-  2. `npm start`
+  1. `npm install` or `yarn add`.
+  2. `npm start` or `yarn start`.
 
-
-### Example
+## Example
 
 ```js
 {
@@ -64,14 +78,9 @@
 }
 ```
 
+## Note
 
-### Installation
+`run-env` is essentially a clone of [`per-env`](https://www.npmjs.com/package/per-env) with some notable fixes in 1.0.0:
 
-```shell
-$ npm install --save run-env
-```
-
-
-### License
-
-> MIT License 2016 © Eric Clemmons
+- Windows compatibility.
+- Yarn compatibility.
