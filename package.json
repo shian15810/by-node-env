@@ -37,5 +37,8 @@
   "bugs": {
     "url": "https://github.com/shian15810/run-env/issues"
   },
-  "homepage": "https://github.com/shian15810/run-env#readme"
+  "homepage": "https://github.com/shian15810/run-env#readme",
+  "dependencies": {
+    "cross-spawn": "^6.0.5"
+  }
 }
