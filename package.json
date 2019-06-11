@@ -1,14 +1,14 @@
 {
-  "name": "per-env",
+  "name": "run-env",
   "version": "1.0.2",
   "description": "Clean up your package.json with per-NODE_ENV npm scripts",
   "bin": {
-    "per-env": "./bin/per-env"
+    "run-env": "./bin/run-env"
   },
   "scripts": {
-    "test": "NODE_ENV=development ./bin/per-env && NODE_ENV=test ./bin/per-env",
+    "test": "NODE_ENV=development ./bin/run-env && NODE_ENV=test ./bin/run-env",
     "posttest": "NODE_ENV=test npm run test:status",
-    "test:status": "./bin/per-env",
+    "test:status": "./bin/run-env",
     "test:status:test": "cat does.not.exist &> /dev/null && exit 1 || echo Status: $?",
     "pretest:development": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
     "test:development": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
@@ -17,14 +17,14 @@
     "test:test": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}",
     "posttest:test": "echo ${npm_lifecycle_event} ${CUSTOM_VALUE}"
   },
-  "per-env": {
+  "run-env": {
     "development": {
       "CUSTOM_VALUE": "dev"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ericclemmons/per-env.git"
+    "url": "git+https://github.com/shian15810/run-env.git"
   },
   "keywords": [
     "npm",
@@ -35,7 +35,7 @@
   "author": "Eric Clemmons <eric@smarterspam.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ericclemmons/per-env/issues"
+    "url": "https://github.com/shian15810/run-env/issues"
   },
-  "homepage": "https://github.com/ericclemmons/per-env#readme"
+  "homepage": "https://github.com/shian15810/run-env#readme"
 }

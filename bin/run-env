@@ -11,7 +11,7 @@ var env = Object.assign(
   // Default NODE_ENV
   { NODE_ENV: NODE_ENV},
   // Override with package.json custom env variables
-  (pkg && pkg["per-env"] && pkg["per-env"][NODE_ENV]) || {},
+  (pkg && pkg["run-env"] && pkg["run-env"][NODE_ENV]) || {},
 
   // Explicit env takes precedence
   process.env
@@ -28,7 +28,7 @@ var args = [
   "run",
   script
 ].concat(
-  // Extra arguments after "per-env"
+  // Extra arguments after "run-env"
   process.argv.slice(2)
 );
 
