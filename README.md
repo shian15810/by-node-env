@@ -84,3 +84,9 @@ yarn add by-node-env
 
 - Windows compatibility.
 - Yarn compatibility.
+
+## Contributing
+
+Do you encounter bugs or having new ideas?
+
+Issues, comments and PRs are always welcomed!

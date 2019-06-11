@@ -1,4 +1,4 @@
-# ChangeLog
+# Changelog
 
 ## 1.0.0 (2019-06-11)
 
@@ -9,3 +9,7 @@
 ## 1.0.1 (2019-06-12)
 
 - Fixed some typos.
+
+## 1.0.2 (2019-06-12)
+
+- Updated README.
