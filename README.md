@@ -1,6 +1,6 @@
 # by-node-env
 
-Run package.json scripts depending on `NODE_ENV`.
+Run package.json scripts by `NODE_ENV`.
 
 [![travis build](https://img.shields.io/travis/shian15810/by-node-env.svg)](https://travis-ci.org/shian15810/by-node-env)
 [![version](https://img.shields.io/npm/v/by-node-env.svg)](http://npm.im/by-node-env)
