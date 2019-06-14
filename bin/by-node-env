@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var spawn = require('cross-spawn');
-
+var whichPMRuns = require('which-pm-runs');
 var pkg = require(process.cwd() + '/package.json');
 
 // Default to "development"
@@ -17,9 +17,7 @@ var env = Object.assign(
   process.env,
 );
 
-var command = (process.env.npm_execpath || 'npm').startsWith('yarn')
-  ? 'yarn'
-  : 'npm';
+var command = whichPMRuns().name;
 if (process.platform === 'win32') {
   command += '.cmd';
 }

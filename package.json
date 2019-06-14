@@ -40,7 +40,8 @@
     "posttest:test": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}"
   },
   "dependencies": {
-    "cross-spawn": "^6.0.5"
+    "cross-spawn": "^6.0.5",
+    "which-pm-runs": "^1.0.0"
   },
   "by-node-env": {
     "development": {
