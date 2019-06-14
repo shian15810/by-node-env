@@ -1,11 +1,11 @@
 # by-node-env
 
-Run package.json scripts by `NODE_ENV`.
+Run `package.json` scripts by `NODE_ENV`.
 
-[![travis build](https://img.shields.io/travis/shian15810/by-node-env.svg)](https://travis-ci.org/shian15810/by-node-env)
-[![version](https://img.shields.io/npm/v/by-node-env.svg)](http://npm.im/by-node-env)
-[![downloads](https://img.shields.io/npm/dm/by-node-env.svg)](http://npm-stat.com/charts.html?package=by-node-env)
-[![MIT License](https://img.shields.io/npm/l/by-node-env.svg)](http://opensource.org/licenses/MIT)
+[![Travis (.com)](https://img.shields.io/travis/com/shian15810/by-node-env.svg)](https://travis-ci.com/shian15810/by-node-env)
+[![npm](https://img.shields.io/npm/v/by-node-env.svg)](https://www.npmjs.com/package/by-node-env)
+[![npm](https://img.shields.io/npm/dw/by-node-env.svg)](https://npm-stat.com/charts.html?package=by-node-env)
+[![NPM](https://img.shields.io/npm/l/by-node-env.svg)](https://choosealicense.com/licenses/mit/)
 
 ## Installation
 
@@ -13,6 +13,12 @@ Install with npm:
 
 ```sh
 npm install by-node-env
+```
+
+Install with pnpm:
+
+```sh
+pnpm install by-node-env
 ```
 
 Install with Yarn:
@@ -24,14 +30,14 @@ yarn add by-node-env
 ## Features
 
 - [x] Defaults `NODE_ENV` to `development`.
-- [x] Customize `process.env` by-node-environment.
+- [x] Customize `process.env` for each `NODE_ENV`.
 - [x] Clearer, concise scripts.
 - [x] No more Bash-scripting in `package.json`.
 - [x] Works on Linux, macOS and Windows.
-- [x] Compatible with Yarn and npm.
+- [x] Compatible with npm, pnpm and Yarn.
 - [x] Simplify your workflow:
-  1. `npm install` or `yarn add`.
-  2. `npm start` or `yarn start`.
+  1. `npm install` or `pnpm install` or `yarn add`.
+  2. `npm start` or `pnpm start` or `yarn start`.
 
 ## Example
 
@@ -82,6 +88,7 @@ yarn add by-node-env
 
 `by-node-env` is essentially a clone of [`per-env`](https://www.npmjs.com/package/per-env) with some notable fixes:
 
+- pnpm compatibility.
 - Windows compatibility.
 - Yarn compatibility.
 

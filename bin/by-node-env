@@ -17,7 +17,8 @@ var env = Object.assign(
   process.env,
 );
 
-var command = whichPMRuns().name;
+var pm = whichPMRuns();
+var command = pm ? pm.name : 'npm';
 if (process.platform === 'win32') {
   command += '.cmd';
 }
