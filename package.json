@@ -1,12 +1,12 @@
 {
   "name": "by-node-env",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Run package.json scripts by NODE_ENV.",
   "keywords": [
+    "cross-per-env",
     "development",
     "env",
     "if-env",
-    "is-ci",
     "node",
     "node-env",
     "npm",
@@ -15,11 +15,11 @@
     "p-s",
     "package-json",
     "per-env",
+    "pnpm",
     "production",
     "run",
     "run-script",
     "scripts",
-    "staging",
     "test",
     "yarn",
     "yo-env"

@@ -17,3 +17,8 @@
 ## 1.0.3 (2019-06-12)
 
 - Refactored some codes.
+
+## 1.1.0 (2019-06-14)
+
+- Changed support of Yarn from `process.env.npm_execpath` to [`which-pm-runs`](https://www.npmjs.com/package/which-pm-runs), with additional pnpm support.
+- Updated README.
