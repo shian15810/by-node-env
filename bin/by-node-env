@@ -18,10 +18,10 @@ var env = Object.assign(
 );
 
 var pm = whichPMRuns();
-var command = pm ? pm.name : 'npm';
-if (process.platform === 'win32') {
-  command += '.cmd';
-}
+var command =
+  pm && pm.name
+    ? pm.name + (process.platform === 'win32' ? '.cmd' : '')
+    : process.env.npm_execpath || 'npm';
 
 var script = [
   env.npm_lifecycle_event, // e.g. "start"
