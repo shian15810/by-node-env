@@ -1,6 +1,6 @@
 # by-node-env
 
-Run `package.json` scripts by `NODE_ENV`.
+Run **package.json** scripts by `NODE_ENV`.
 
 [![Travis (.com)](https://img.shields.io/travis/com/shian15810/by-node-env.svg)](https://travis-ci.com/shian15810/by-node-env)
 [![npm](https://img.shields.io/npm/v/by-node-env.svg)](https://www.npmjs.com/package/by-node-env)
@@ -32,7 +32,7 @@ yarn add by-node-env
 - [x] Defaults `NODE_ENV` to `development`.
 - [x] Customize `process.env` for each `NODE_ENV`.
 - [x] Clearer, concise scripts.
-- [x] No more Bash-scripting in `package.json`.
+- [x] No more Bash-scripting in **package.json**.
 - [x] Works on Linux, macOS and Windows.
 - [x] Compatible with npm, pnpm and Yarn.
 - [x] Simplify your workflow:
@@ -43,7 +43,7 @@ yarn add by-node-env
 
 ```js
 {
-  // Processes spawned by `by-node-env` inherit environment-specific
+  // Processes spawned by by-node-env inherit environment-specific
   // variables, if defined.
   "by-node-env": {
     "production": {
@@ -86,7 +86,7 @@ yarn add by-node-env
 
 ## Note
 
-`by-node-env` is essentially a clone of [`per-env`](https://www.npmjs.com/package/per-env) with some notable fixes:
+**by-node-env** is essentially a clone of [**per-env**](https://www.npmjs.com/package/per-env) with some notable fixes:
 
 - pnpm compatibility.
 - Windows compatibility.
