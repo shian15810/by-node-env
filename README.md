@@ -9,19 +9,19 @@ Run **package.json** scripts by `NODE_ENV`.
 
 ## Installation
 
-Install with npm:
+Install with **npm**:
 
 ```sh
 npm install by-node-env
 ```
 
-Install with pnpm:
+Install with **pnpm**:
 
 ```sh
 pnpm install by-node-env
 ```
 
-Install with Yarn:
+Install with **Yarn**:
 
 ```sh
 yarn add by-node-env
@@ -34,8 +34,8 @@ yarn add by-node-env
 - [x] Customize `process.env` for each `NODE_ENV`.
 - [x] Clearer, concise scripts.
 - [x] No more Bash-scripting in **package.json**.
-- [x] Works on Linux, macOS and Windows.
-- [x] Compatible with npm, pnpm and Yarn.
+- [x] Works on **Linux**, **macOS** and **Windows**.
+- [x] Compatible with **npm**, **pnpm** and **Yarn**.
 - [x] Simplify your workflow:
   1. `npm install` or `pnpm install` or `yarn add`.
   2. `npm start` or `pnpm start` or `yarn start`.
@@ -89,14 +89,13 @@ yarn add by-node-env
 
 - **by-node-env** is essentially a clone of [**per-env**](https://www.npmjs.com/package/per-env) with some notable fixes:
 
-  - dotenv compatibility.
-  - pnpm compatibility.
-  - Windows compatibility.
-  - Yarn compatibility.
+  - **pnpm** compatibility.
+  - **Windows** compatibility.
+  - **Yarn** compatibility.
 
 - **.env** file found in root directory of your project is parsed using [**dotenv**](https://www.npmjs.com/package/dotenv).
 
-- Option to specify custom file path for **.env** file is not yet implemented. Please raise an issue if you need it. PR is also welcomed.
+- Option to specify custom file path for **.env** file is not yet implemented. Please raise an issue if you need it, PR is also welcomed.
 
 ## Contributing
 
