@@ -1,6 +1,6 @@
 # by-node-env
 
-Run **package.json** scripts by `NODE_ENV`.
+Run **package.json** scripts **by `NODE_ENV`**.
 
 [![Travis (.com)](https://img.shields.io/travis/com/shian15810/by-node-env.svg)](https://travis-ci.com/shian15810/by-node-env)
 [![npm](https://img.shields.io/npm/v/by-node-env.svg)](https://www.npmjs.com/package/by-node-env)
@@ -29,23 +29,45 @@ yarn add by-node-env
 
 ## Features
 
-- [x] If `NODE_ENV` is defined in **.env** file found in root directory of your project, defaults to it.
-- [x] Else, defaults `NODE_ENV` to `development`.
+- [x] Read `NODE_ENV` as environment variable from `process.env`.
+- [x] Read `NODE_ENV` from root **.env** file in project directory.
+- [x] Defaults `NODE_ENV` to `development`.
 - [x] Customize `process.env` for each `NODE_ENV`.
 - [x] Clearer, concise scripts.
 - [x] No more Bash-scripting in **package.json**.
 - [x] Works on **Linux**, **macOS** and **Windows**.
 - [x] Compatible with **npm**, **pnpm** and **Yarn**.
-- [x] Simplify your workflow:
-  1. `npm install` or `pnpm install` or `yarn add`.
+- [x] Simplify workflow:
+  1. `npm install` or `pnpm install` or `yarn install`.
   2. `npm start` or `pnpm start` or `yarn start`.
 
-## Example
+## `NODE_ENV`
 
-```js
+Priority order of resolving `NODE_ENV` is as follows:
+
+1. Environment variable aka `process.env`.
+
+2. Root **.env** file in project directory.
+
+3. Defaults to `development`.
+
+If `NODE_ENV=development` is listed in root **.env** file and `NODE_ENV=production yarn start` is executed in shell, `yarn run start:production` will be executed by **by-node-env** since environment variable (1) take precedence over root **.env** file (2).
+
+If syntax of `NODE_ENV=production yarn start` is not preferred, just add `NODE_ENV=production` to root **.env** file and execute `yarn start` in shell, **by-node-env** will then execute `yarn run start:production`.
+
+**by-node-env** will not populate `process.env` of your application with entries listed in root **.env** file (except `NODE_ENV`), only purpose of root **.env** file for **by-node-env** is just for it to read an entry called `NODE_ENV` from it.
+
+After `NODE_ENV` is resolved by `by-node-env` and your application is spawned, `NODE_ENV` will be passed to your application as `process.env.NODE_ENV`.
+
+---
+
+## Example 1
+
+### Example 1: **package.json**
+
+```jsonc
 {
-  // Processes spawned by by-node-env inherit environment-specific
-  // variables, if defined.
+  // Processes spawned by by-node-env inherit environment-specific variables, if defined.
   "by-node-env": {
     "production": {
       "DOCKER_USER": "my",
@@ -57,10 +79,10 @@ yarn add by-node-env
     "build": "by-node-env",
 
     "build:development": "webpack -d --watch",
-    "build:staging": "webpack -p",
     "build:production": "webpack -p",
+    "build:staging": "webpack -p",
 
-    // Deployment won't work unless NODE_ENV=production is explicitly set.
+    // Deployment will not work unless NODE_ENV=production is explicitly set.
     "deploy": "by-node-env",
 
     "predeploy:production": "docker build -t ${DOCKER_USER}/${DOCKER_PROJECT} .",
@@ -85,20 +107,47 @@ yarn add by-node-env
 }
 ```
 
+---
+
+## Example 2
+
+### Example 2: **.env**
+
+```ini
+NODE_ENV=production
+```
+
+### Example 2: **package.json**
+
+```jsonc
+{
+  "scripts": {
+    // This will run "start:production" since .env file is present and NODE_ENV is defined.
+    "start": "by-node-env",
+
+    "start:development": "ts-node .",
+    "start:production": "ts-node-dev ."
+  }
+}
+```
+
+---
+
 ## Notes
 
 - **by-node-env** is essentially a clone of [**per-env**](https://www.npmjs.com/package/per-env) with some notable fixes:
 
+  - **.env** (`NODE_ENV` only) compatibility.
   - **pnpm** compatibility.
   - **Windows** compatibility.
   - **Yarn** compatibility.
 
-- **.env** file found in root directory of your project is parsed using [**dotenv**](https://www.npmjs.com/package/dotenv).
+- Root **.env** file in project directory is parsed using [**dotenv**](https://www.npmjs.com/package/dotenv).
 
-- Option to specify custom file path for **.env** file is not yet implemented. Please raise an issue if you need it, PR is also welcomed.
+- Option to specify custom file path for **.env** file is not yet implemented, please raise an issue or PR if needed.
 
 ## Contributing
 
-Do you encounter bugs or having new ideas?
+Encounter bugs or having new suggestions?
 
 Issues, comments and PRs are always welcomed!
