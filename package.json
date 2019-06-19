@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "cross-spawn": "^6.0.5",
+    "dotenv": "^8.0.0",
     "which-pm-runs": "^1.0.0"
   },
   "by-node-env": {
