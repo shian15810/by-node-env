@@ -29,7 +29,8 @@ yarn add by-node-env
 
 ## Features
 
-- [x] Defaults `NODE_ENV` to `development`.
+- [x] If `NODE_ENV` is defined in **.env** file found in root directory of your project, defaults to it.
+- [x] Else, defaults `NODE_ENV` to `development`.
 - [x] Customize `process.env` for each `NODE_ENV`.
 - [x] Clearer, concise scripts.
 - [x] No more Bash-scripting in **package.json**.
@@ -84,13 +85,18 @@ yarn add by-node-env
 }
 ```
 
-## Note
+## Notes
 
-**by-node-env** is essentially a clone of [**per-env**](https://www.npmjs.com/package/per-env) with some notable fixes:
+- **by-node-env** is essentially a clone of [**per-env**](https://www.npmjs.com/package/per-env) with some notable fixes:
 
-- pnpm compatibility.
-- Windows compatibility.
-- Yarn compatibility.
+  - dotenv compatibility.
+  - pnpm compatibility.
+  - Windows compatibility.
+  - Yarn compatibility.
+
+- **.env** file found in root directory of your project is parsed using [**dotenv**](https://www.npmjs.com/package/dotenv).
+
+- Option to specify custom file path for **.env** file is not yet implemented. Please raise an issue if you need it. PR is also welcomed.
 
 ## Contributing
 
