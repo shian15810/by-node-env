@@ -41,6 +41,40 @@ yarn add by-node-env
   1. `npm install` or `pnpm install` or `yarn install`.
   2. `npm start` or `pnpm start` or `yarn start`.
 
+## Problem
+
+Most of the time, no matter if `NODE_ENV` is `development`, `test`, `production` or any other custom value, the only thing that I care about with setting up and running a **Node.js** application is just by simply executing `yarn install` and `yarn start`, which has been the de dacto way of setting up and running a **Node.js** application for many years already anyway.
+
+This can in many ways solve a lot of problems encoutered in setting up countinuous integration and deployment, such as different `yarn run` commands for different values `NODE_ENV`, by exposing a unifying and consistent interface (`yarn install` and `yarn start`), as long as `NODE_ENV` is defined, which in almost all cases should or must be provided as environment variable. When you execute `yarn test`, `NODE_ENV` is implicitly or explicitly set to `test` anyway.
+
+Since setting `NODE_ENV` as environment variable is required and recommended in many ways, why not listing it explicitly in the **scripts** section of **package.json**?
+
+## Solution
+
+### **package.json**
+
+```jsonc
+{
+  "scripts": {
+    "start": "by-node-env",
+    "start:development": "node src",
+    "start:test": "jest",
+    "start:production": "node build",
+  }
+}
+```
+
+These 4 are equivalents:
+
+1. `yarn start` if `NODE_ENV=production` is already defined as enrivonment variable.
+2. `export NODE_ENV=production && yarn start`.
+3. `NODE_ENV=production yarn start`.
+4. `yarn run start:production`.
+
+**4** is different from the rest in term of `NODE_ENV` as this script bypasses **by-node-env**. As a result, the resulting `process.env.NODE_ENV` ended up in your application will not follow the rules of **by-node-env**.
+
+For **1** (`yarn start`), if `NODE_ENV` is not defined as environment variable, `by-node-env` will defaults it to `development` and then run `start:development` script.
+
 ## `NODE_ENV`
 
 Priority order of resolving `NODE_ENV` is as follows:
