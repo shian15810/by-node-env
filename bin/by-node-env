@@ -12,7 +12,7 @@ var envPath = path.resolve(process.cwd(), '.env');
 var nodeEnv = 'development';
 if (fs.existsSync(envPath)) {
   var envConfig = dotenv.parse(fs.readFileSync(envPath));
-  if (envConfig.NODE_ENV) {
+  if (envConfig && envConfig.NODE_ENV) {
     nodeEnv = envConfig.NODE_ENV;
   }
 }
