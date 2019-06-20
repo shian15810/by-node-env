@@ -1,6 +1,6 @@
 # by-node-env
 
-Run **package.json** scripts **by `NODE_ENV`**.
+> Run package.json scripts determined by NODE_ENV.
 
 [![Travis (.com)](https://img.shields.io/travis/com/shian15810/by-node-env.svg)](https://travis-ci.com/shian15810/by-node-env)
 [![npm](https://img.shields.io/npm/v/by-node-env.svg)](https://www.npmjs.com/package/by-node-env)
@@ -30,24 +30,26 @@ yarn add by-node-env
 ## Features
 
 - [x] Read `NODE_ENV` as environment variable from `process.env`.
-- [x] Read `NODE_ENV` from root **.env** file in project directory.
+- [x] Read `NODE_ENV` from **.env** file in project root directory.
 - [x] Defaults `NODE_ENV` to `development`.
 - [x] Customize `process.env` for each `NODE_ENV`.
-- [x] Clearer, concise scripts.
-- [x] No more Bash-scripting in **package.json**.
+- [x] Clearer, concise **scripts** in **package.json**.
+- [x] No more **Bash** scripting in **package.json**.
 - [x] Works on **Linux**, **macOS** and **Windows**.
 - [x] Compatible with **npm**, **pnpm** and **Yarn**.
-- [x] Simplify workflow:
+- [x] Consistent workflow for any `NODE_ENV`:
   1. `npm install` or `pnpm install` or `yarn install`.
   2. `npm start` or `pnpm start` or `yarn start`.
 
 ## Problem
 
-Most of the time, no matter if `NODE_ENV` is `development`, `test`, `production` or any other custom value, the only thing that I care about with setting up and running a **Node.js** application is just by simply executing `yarn install` and `yarn start`, which has been the de dacto way of setting up and running a **Node.js** application for many years already anyway.
+When developing a **Node.js** application in `development` mode, we often start our application with one of these different commands: `npm start`, `npm run dev`, `npm run serve`, etc. In addition, we also explicitly set `NODE_ENV=development` as an environment variable for our application to work as expected in `development` mode.
 
-This can in many ways solve a lot of problems encoutered in setting up countinuous integration and deployment, such as different `yarn run` commands for different values `NODE_ENV`, by exposing a unifying and consistent interface (`yarn install` and `yarn start`), as long as `NODE_ENV` is defined, which in almost all cases should or must be provided as environment variable. When you execute `yarn test`, `NODE_ENV` is implicitly or explicitly set to `test` anyway.
+When deploying to `production`, we often use one of these different commands: `npm start`, `npm run prod`, `npm run serve`, etc. `NODE_ENV=production` is a must-have environment variable in this situation.
 
-Since setting `NODE_ENV` as environment variable is required and recommended in many ways, why not listing it explicitly in the **scripts** section of **package.json**?
+When dealing with a lot of projects at the same time, it can get really troubling and embarassing, especially under heavy cognitive load. As a result, we often ended up wasting time consulting **README** or **scripts** in **package.json** to figure it out.
+
+For setup files of CI and CD such as **.travis.yml** and **docker-compose.yml**, differing command to start our application in certain mode is also very confusing. This also make understanding those setup files a little bit harder.
 
 ## Solution
 
@@ -56,42 +58,47 @@ Since setting `NODE_ENV` as environment variable is required and recommended in 
 ```jsonc
 {
   "scripts": {
+    // Listing all start scripts by NODE_ENV like this is way more concise and explicit.
     "start": "by-node-env",
+
     "start:development": "node src",
-    "start:test": "jest",
+    "start:test": "npm test",
     "start:production": "node build",
   }
 }
 ```
 
-These 4 are equivalents:
+`npm start` has been the de facto way of starting a **Node.js** application for a very long time.
 
-1. `yarn start` if `NODE_ENV=production` is already defined as enrivonment variable.
-2. `export NODE_ENV=production && yarn start`.
-3. `NODE_ENV=production yarn start`.
-4. `yarn run start:production`.
+Besides that, to ensure that our application start in the mode we desired so that it works as expected in that mode, `NODE_ENV` is often set as an environment variable.
 
-**4** is different from the rest in term of `NODE_ENV` as this script bypasses **by-node-env**. As a result, the resulting `process.env.NODE_ENV` ended up in your application will not follow the rules of **by-node-env**.
+Why not combining both, so that when we execute `npm start` when `NODE_ENV=production`, `npm run start:production` will be spawned.
 
-For **1** (`yarn start`), if `NODE_ENV` is not defined as environment variable, `by-node-env` will defaults it to `development` and then run `start:development` script.
+Similarly, executing `npm start` when `NODE_ENV=development` will spawn `npm run start:development`.
+
+Even when `NODE_ENV=test`, `npm start` can be set to spawn `npm run start:test` too. Some might disagree with this and would instead go for `npm test`. However, you could set `"start:test": "npm test"` as shown above, so that when you execute `npm start` when `NODE_ENV=test`, `npm test` will eventually get spawned.
+
+Custom **scripts** other than **start** can also be provided in **package.json**. The same applies to custom `NODE_ENV` too. Refer to more examples below.
+
+In short, `NODE_ENV` acts as a switch for which **scripts** in **package.json** to be selected for execution, which is the purpose of **by-node-env**.
 
 ## `NODE_ENV`
 
+**by-node-env** needs to resolve `NODE_ENV` ahead of running your application to select appropriate **scripts** in **package.json** for execution, at the same time set the resolved `NODE_ENV` as `process.env.NODE_ENV` for you in your application.
+
 Priority order of resolving `NODE_ENV` is as follows:
 
-1. Environment variable aka `process.env`.
+1. Environment variable.
 
-2. Root **.env** file in project directory.
+2. **.env** file in project root directory.
 
 3. Defaults to `development`.
 
-If `NODE_ENV=development` is listed in root **.env** file and `NODE_ENV=production yarn start` is executed in shell, `yarn run start:production` will be executed by **by-node-env** since environment variable (1) take precedence over root **.env** file (2).
+Whichever `NODE_ENV` found first takes precedence.
 
-If syntax of `NODE_ENV=production yarn start` is not preferred, just add `NODE_ENV=production` to root **.env** file and execute `yarn start` in shell, **by-node-env** will then execute `yarn run start:production`.
+**by-node-env** will only set `process.env.NODE_ENV` of your application to `NODE_ENV` it resolved. Other environment variables will be passed as is to your application in `process.env`. If a **.env** file is present in your project root directory, all entries except `NODE_ENV` are ignored.
 
-**by-node-env** will not populate `process.env` of your application with entries listed in root **.env** file (except `NODE_ENV`), only purpose of root **.env** file for **by-node-env** is just for it to read an entry called `NODE_ENV` from it.
-
-After `NODE_ENV` is resolved by `by-node-env` and your application is spawned, `NODE_ENV` will be passed to your application as `process.env.NODE_ENV`.
+In other words, **by-node-env** will not mess with your environment variables except `NODE_ENV`.
 
 ---
 
@@ -176,9 +183,11 @@ NODE_ENV=production
   - **Windows** compatibility.
   - **Yarn** compatibility.
 
-- Root **.env** file in project directory is parsed using [**dotenv**](https://www.npmjs.com/package/dotenv).
+- **.env** file in project root directory is parsed using [**dotenv**](https://www.npmjs.com/package/dotenv).
 
-- Option to specify custom file path for **.env** file is not yet implemented, please raise an issue or PR if needed.
+- This package might support more **.env** files as documented by **create-react-app** [here](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables#what-other-env-files-can-be-used) in the future.
+
+- Option to specify custom file path for **.env** file is not yet implemented, please raise an issue or PR if you need this feature.
 
 ## Contributing
 
