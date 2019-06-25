@@ -68,7 +68,7 @@ When simultaneously working on multiple projects each with a different startup c
 
 ## Solution
 
-### **package.json**
+### package.json
 
 ```jsonc
 {
@@ -99,7 +99,7 @@ Custom **scripts** other than **start** can also be provided in **package.json**
 
 In short, in the context of **by-node-env**, the environment variable `NODE_ENV` acts as a switch to select appropriate **scripts** in **package.json** for execution.
 
-## `NODE_ENV`
+## NODE_ENV
 
 By design, **by-node-env** needs to resolve `NODE_ENV` ahead of starting your application to select appropriate **scripts** in **package.json** for execution, at the same time set the resolved `NODE_ENV` as `process.env.NODE_ENV` in your application runtime.
 
@@ -119,13 +119,13 @@ In other words, **by-node-env** will not manipulate your application's environme
 
 ## Example 1
 
-### Example 1: **.env**
+### Example 1: .env
 
 ```ini
 NODE_ENV=production
 ```
 
-### Example 1: **package.json**
+### Example 1: package.json
 
 ```jsonc
 {
@@ -141,7 +141,7 @@ NODE_ENV=production
 
 ## Example 2
 
-### Example 2: **package.json**
+### Example 2: package.json
 
 ```jsonc
 {
