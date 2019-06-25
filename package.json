@@ -32,12 +32,12 @@
   "repository": "https://github.com/shian15810/by-node-env.git",
   "scripts": {
     "test": "node ./bin/by-node-env && cross-env NODE_ENV=test node ./bin/by-node-env",
-    "pretest:development": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
-    "test:development": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
-    "posttest:development": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
-    "pretest:test": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
-    "test:test": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
-    "posttest:test": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}"
+    "pretest:development": "echo $npm_lifecycle_event $CUSTOM_ENV",
+    "test:development": "echo $npm_lifecycle_event $CUSTOM_ENV",
+    "posttest:development": "echo $npm_lifecycle_event $CUSTOM_ENV",
+    "pretest:test": "echo $npm_lifecycle_event $CUSTOM_ENV",
+    "test:test": "echo $npm_lifecycle_event $CUSTOM_ENV",
+    "posttest:test": "echo $npm_lifecycle_event $CUSTOM_ENV"
   },
   "dependencies": {
     "cross-spawn": "^6.0.5",
