@@ -31,7 +31,7 @@
   "bin": "./bin/by-node-env",
   "repository": "https://github.com/shian15810/by-node-env.git",
   "scripts": {
-    "test": "./bin/by-node-env && NODE_ENV=test ./bin/by-node-env",
+    "test": "node ./bin/by-node-env && NODE_ENV=test node ./bin/by-node-env",
     "pretest:development": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
     "test:development": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
     "posttest:development": "echo ${npm_lifecycle_event} ${CUSTOM_ENV}",
