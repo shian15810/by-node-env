@@ -28,10 +28,11 @@
   "bugs": "https://github.com/shian15810/by-node-env/issues",
   "license": "MIT",
   "author": "Chuah Chee Shian <shian15810@gmail.com>",
-  "bin": "./bin/by-node-env",
+  "main": "index.js",
+  "bin": "index.js",
   "repository": "https://github.com/shian15810/by-node-env.git",
   "scripts": {
-    "test": "node ./bin/by-node-env && cross-env NODE_ENV=test node ./bin/by-node-env",
+    "test": "node . && cross-env NODE_ENV=test node .",
     "pretest:development": "echo $npm_lifecycle_event $CUSTOM_ENV",
     "test:development": "echo $npm_lifecycle_event $CUSTOM_ENV",
     "posttest:development": "echo $npm_lifecycle_event $CUSTOM_ENV",
