@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 var fs = require('fs');
 var path = require('path');
 var spawn = require('cross-spawn');
@@ -20,36 +22,37 @@ var NODE_ENV = process.env.NODE_ENV || nodeEnv;
 
 var env = Object.assign(
   {},
-  // Default NODE_ENV
-  { NODE_ENV: NODE_ENV },
   // Override with package.json custom env variables
   (pkg && pkg['by-node-env'] && pkg['by-node-env'][NODE_ENV]) || {},
+  // Default NODE_ENV
+  { NODE_ENV: NODE_ENV },
   // Explicit env takes precedence
   process.env,
 );
 
-var pm = whichPMRuns();
-var command =
-  pm && pm.name
-    ? pm.name + (process.platform === 'win32' ? '.cmd' : '')
-    : process.env.npm_execpath || 'npm';
+if (require.main === module || !module.parent) {
+  var pm = whichPMRuns();
+  var command = pm && pm.name ? pm.name : env.npm_execpath || 'npm';
 
-var script = [
-  env.npm_lifecycle_event, // e.g. "start"
-  env.NODE_ENV,
-].join(':'); // e.g. "start:development"
+  var script = [
+    env.npm_lifecycle_event, // e.g. "start"
+    env.NODE_ENV,
+  ].join(':'); // e.g. "start:development"
 
-var args = ['run', script].concat(
-  // Extra arguments after "by-node-env"
-  process.argv.slice(2),
-);
+  var args = ['run', script].concat(
+    // Extra arguments after "by-node-env"
+    process.argv.slice(2),
+  );
 
-var options = {
-  cwd: process.cwd(),
-  env: env,
-  stdio: 'inherit',
-};
+  var options = {
+    cwd: process.cwd(),
+    env: env,
+    stdio: 'inherit',
+  };
 
-var result = spawn.sync(command, args, options);
+  var result = spawn.sync(command, args, options);
 
-process.exit(result.status);
+  process.exit(result.status);
+} else {
+  Object.assign(process.env, env);
+}
