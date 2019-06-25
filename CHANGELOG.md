@@ -29,3 +29,9 @@
 ## 1.2.0 (2019-06-19)
 
 - Defaulted `NODE_ENV` to defined `NODE_ENV` in **.env** file if it is found in `process.cwd()`. `.env` file is parsed using [**dotenv**](https://www.npmjs.com/package/dotenv).
+
+## 1.3.0 (2019-06-26)
+
+- Solved some testing issues on **Windows**.
+- Restructured repository.
+- Replaced **Yarn** with **npm**.
