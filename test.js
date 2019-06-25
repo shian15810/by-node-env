@@ -1,8 +1,7 @@
 'use strict';
 
 var assert = require('assert').strict;
-var path = require('path');
-var pkg = require(path.resolve(process.cwd(), 'package.json'));
+var pkg = require('./package.json');
 
 var env =
   (pkg && pkg['by-node-env'] && pkg['by-node-env'][process.env.NODE_ENV]) || {};

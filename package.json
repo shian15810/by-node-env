@@ -28,8 +28,11 @@
   "bugs": "https://github.com/shian15810/by-node-env/issues",
   "license": "MIT",
   "author": "Chuah Chee Shian <shian15810@gmail.com>",
+  "files": [
+    "index.js"
+  ],
   "main": "index.js",
-  "bin": "index.js",
+  "bin": "./index.js",
   "repository": "https://github.com/shian15810/by-node-env.git",
   "scripts": {
     "test": "node . && cross-env NODE_ENV=test node .",

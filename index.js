@@ -35,7 +35,7 @@ if (require.main === module || !module.parent) {
   var command = pm && pm.name ? pm.name : env.npm_execpath || 'npm';
 
   var script = [
-    env.npm_lifecycle_event, // e.g. "start"
+    env.npm_lifecycle_event || 'start', // e.g. "start"
     env.NODE_ENV,
   ].join(':'); // e.g. "start:development"
 
