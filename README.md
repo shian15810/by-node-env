@@ -1,6 +1,6 @@
 # by-node-env
 
-> Run package.json scripts determined by NODE_ENV.
+> Run package.json scripts by NODE_ENV.
 
 [![Travis (.com)](https://img.shields.io/travis/com/shian15810/by-node-env.svg)](https://travis-ci.com/shian15810/by-node-env)
 [![npm](https://img.shields.io/npm/v/by-node-env.svg)](https://www.npmjs.com/package/by-node-env)
@@ -30,26 +30,41 @@ yarn add by-node-env
 ## Features
 
 - [x] Read `NODE_ENV` as environment variable from `process.env`.
-- [x] Read `NODE_ENV` from **.env** file in project root directory.
+- [x] Read `NODE_ENV` from **.env** file in your project root directory.
 - [x] Defaults `NODE_ENV` to `development`.
 - [x] Customize `process.env` for each `NODE_ENV`.
 - [x] Clearer, concise **scripts** in **package.json**.
 - [x] No more **Bash** scripting in **package.json**.
-- [x] Works on **Linux**, **macOS** and **Windows**.
-- [x] Compatible with **npm**, **pnpm** and **Yarn**.
+- [x] Works on **Linux**, **macOS**, and **Windows**.
+- [x] Compatible with **npm**, **pnpm**, and **Yarn**.
 - [x] Consistent workflow for any `NODE_ENV`:
   1. `npm install` or `pnpm install` or `yarn install`.
   2. `npm start` or `pnpm start` or `yarn start`.
 
 ## Problem
 
-When developing a **Node.js** application in `development` mode, we often start our application with one of these different commands: `npm start`, `npm run dev`, `npm run serve`, etc. In addition, we also explicitly set `NODE_ENV=development` as an environment variable for our application to work as expected in `development` mode.
+When developing a **Node.js** application in `development` mode, we often start our application with one of these different commands: `npm start`, `npm run dev`, `npm run serve`, etc. In addition, we also explicitly set `NODE_ENV=development` as an environment variable for our application to work as expected.
 
 When deploying to `production`, we often use one of these different commands: `npm start`, `npm run prod`, `npm run serve`, etc. `NODE_ENV=production` is a must-have environment variable in this situation.
 
-When dealing with a lot of projects at the same time, it can get really troubling and embarassing, especially under heavy cognitive load. As a result, we often ended up wasting time consulting **README** or **scripts** in **package.json** to figure it out.
+The **package.json** might look like this for the situations mentioned above:
 
-For setup files of CI and CD such as **.travis.yml** and **docker-compose.yml**, differing command to start our application in certain mode is also very confusing. This also make understanding those setup files a little bit harder.
+```jsonc
+{
+  "scripts": {
+    // Different scripts for each NODE_ENV.
+    "dev": "NODE_ENV=development node src",
+    "prod": "NODE_ENV=production node build",
+
+    "serve": "npm run dev",
+    "start": "npm run prod",
+
+    "test": "jest"
+  }
+}
+```
+
+When simultaneously working on multiple projects each with a different startup command, it could be very troubling and forgetting, especially under heavy cognitive load. As a result, we often waste our precious time consulting the **README** or the **scripts** section in **package.json**.
 
 ## Solution
 
@@ -58,39 +73,41 @@ For setup files of CI and CD such as **.travis.yml** and **docker-compose.yml**,
 ```jsonc
 {
   "scripts": {
-    // Listing all start scripts by NODE_ENV like this is way more concise and explicit.
     "start": "by-node-env",
 
+    // Listing all start scripts by NODE_ENV like this is way more concise and explicit.
     "start:development": "node src",
     "start:test": "npm test",
     "start:production": "node build",
+
+    "test": "jest"
   }
 }
 ```
 
 `npm start` has been the de facto way of starting a **Node.js** application for a very long time.
 
-Besides that, to ensure that our application start in the mode we desired so that it works as expected in that mode, `NODE_ENV` is often set as an environment variable.
+Besides that, to ensure that our application runs in the mode we desired, `NODE_ENV` is often set as an environment variable. A lot of popular frameworks expect `NODE_ENV` to be set as well.
 
-Why not combining both, so that when we execute `npm start` when `NODE_ENV=production`, `npm run start:production` will be spawned.
+Why not combine both, so that when we execute `npm start` when `NODE_ENV=production`, `npm run start:production` will be spawned.
 
 Similarly, executing `npm start` when `NODE_ENV=development` will spawn `npm run start:development`.
 
-Even when `NODE_ENV=test`, `npm start` can be set to spawn `npm run start:test` too. Some might disagree with this and would instead go for `npm test`. However, you could set `"start:test": "npm test"` as shown above, so that when you execute `npm start` when `NODE_ENV=test`, `npm test` will eventually get spawned.
+Even when `NODE_ENV=test`, `npm start` can set to spawn `npm run start:test` too. Some might disagree with this and would instead do `npm test`. However, you could set `{ "start:test": "npm test" }` in the **scripts** section of your **package.json** as shown above, so that if you execute `npm start` when `NODE_ENV=test`, `npm test` will eventually get spawned.
 
-Custom **scripts** other than **start** can also be provided in **package.json**. The same applies to custom `NODE_ENV` too. Refer to more examples below.
+Custom **scripts** other than **start** can also be provided in **package.json**. The same applies to custom `NODE_ENV` too. Please refer to more examples below.
 
-In short, `NODE_ENV` acts as a switch for which **scripts** in **package.json** to be selected for execution, which is the purpose of **by-node-env**.
+In short, in the context of **by-node-env**, the environment variable `NODE_ENV` acts as a switch to select appropriate **scripts** in **package.json** for execution.
 
 ## `NODE_ENV`
 
-**by-node-env** needs to resolve `NODE_ENV` ahead of running your application to select appropriate **scripts** in **package.json** for execution, at the same time set the resolved `NODE_ENV` as `process.env.NODE_ENV` for you in your application.
+By design, **by-node-env** needs to resolve `NODE_ENV` ahead of your application to select appropriate **scripts** in **package.json** for execution, at the same time set the resolved `NODE_ENV` as `process.env.NODE_ENV` in your application.
 
-Priority order of resolving `NODE_ENV` is as follows:
+The priority order of resolving `NODE_ENV` is as follows:
 
 1. Environment variable.
 
-2. **.env** file in project root directory.
+2. **.env** file in the project root directory.
 
 3. Defaults to `development`.
 
@@ -98,13 +115,33 @@ Whichever `NODE_ENV` found first takes precedence.
 
 **by-node-env** will only set `process.env.NODE_ENV` of your application to `NODE_ENV` it resolved. Other environment variables will be passed as is to your application in `process.env`. If a **.env** file is present in your project root directory, all entries except `NODE_ENV` are ignored.
 
-In other words, **by-node-env** will not mess with your environment variables except `NODE_ENV`.
-
----
+In other words, **by-node-env** will not manipulate your application's environment variables except `NODE_ENV`.
 
 ## Example 1
 
+### Example 1: **.env**
+
+```ini
+NODE_ENV=production
+```
+
 ### Example 1: **package.json**
+
+```jsonc
+{
+  "scripts": {
+    // This will run "start:production" since .env file is present and NODE_ENV is defined in it.
+    "start": "by-node-env",
+
+    "start:development": "ts-node .",
+    "start:production": "ts-node-dev ."
+  }
+}
+```
+
+## Example 2
+
+### Example 2: **package.json**
 
 ```jsonc
 {
@@ -148,49 +185,23 @@ In other words, **by-node-env** will not mess with your environment variables ex
 }
 ```
 
----
-
-## Example 2
-
-### Example 2: **.env**
-
-```ini
-NODE_ENV=production
-```
-
-### Example 2: **package.json**
-
-```jsonc
-{
-  "scripts": {
-    // This will run "start:production" since .env file is present and NODE_ENV is defined.
-    "start": "by-node-env",
-
-    "start:development": "ts-node .",
-    "start:production": "ts-node-dev ."
-  }
-}
-```
-
----
-
 ## Notes
 
 - **by-node-env** is essentially a clone of [**per-env**](https://www.npmjs.com/package/per-env) with some notable fixes:
 
-  - **.env** (`NODE_ENV` only) compatibility.
+  - **.env** (`NODE_ENV` only) support.
   - **pnpm** compatibility.
   - **Windows** compatibility.
   - **Yarn** compatibility.
 
-- **.env** file in project root directory is parsed using [**dotenv**](https://www.npmjs.com/package/dotenv).
+- The **.env** file is parsed using [**dotenv**](https://www.npmjs.com/package/dotenv).
 
-- This package might support more **.env** files as documented by **create-react-app** [here](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables#what-other-env-files-can-be-used) in the future.
+- This package might support more **.env** files in the future, as documented by **create-react-app** [here](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables#what-other-env-files-can-be-used).
 
-- Option to specify custom file path for **.env** file is not yet implemented, please raise an issue or PR if you need this feature.
+- Option to specify a custom file path for the **.env** file is not yet implemented, please raise an issue or PR if you need this feature.
 
 ## Contributing
 
 Encounter bugs or having new suggestions?
 
-Issues, comments and PRs are always welcomed!
+Issues, comments, and PRs are always welcomed!
