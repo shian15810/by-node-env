@@ -1,6 +1,6 @@
 # by-node-env
 
-> Run package.json scripts by NODE_ENV.
+Run **package.json** **scripts** by `NODE_ENV`.
 
 [![Travis (.com)](https://img.shields.io/travis/com/shian15810/by-node-env.svg)](https://travis-ci.com/shian15810/by-node-env)
 [![npm](https://img.shields.io/npm/v/by-node-env.svg)](https://www.npmjs.com/package/by-node-env)
@@ -101,7 +101,7 @@ In short, in the context of **by-node-env**, the environment variable `NODE_ENV`
 
 ## `NODE_ENV`
 
-By design, **by-node-env** needs to resolve `NODE_ENV` ahead of running your application to select appropriate **scripts** in **package.json** for execution, at the same time set the resolved `NODE_ENV` as `process.env.NODE_ENV` in your application runtime.
+By design, **by-node-env** needs to resolve `NODE_ENV` ahead of starting your application to select appropriate **scripts** in **package.json** for execution, at the same time set the resolved `NODE_ENV` as `process.env.NODE_ENV` in your application runtime.
 
 The priority order of resolving `NODE_ENV` is as follows:
 
