@@ -35,13 +35,14 @@
   "bin": "./index.js",
   "repository": "https://github.com/shian15810/by-node-env.git",
   "scripts": {
-    "test": "node . && cross-env NODE_ENV=test node .",
-    "pretest:development": "node test",
-    "test:development": "node test",
-    "posttest:development": "node test",
-    "pretest:test": "node test",
-    "test:test": "node test",
-    "posttest:test": "node test"
+    "test": "node index.js && cross-env NODE_ENV=test node index.js",
+    "pretest:development": "node test.js",
+    "test:development": "node test.js",
+    "posttest:development": "node test.js",
+    "pretest:test": "node test.js",
+    "test:test": "node test.js",
+    "posttest:test": "node test.js",
+    "prepublishOnly": "npm run test"
   },
   "dependencies": {
     "cross-spawn": "^6.0.5",

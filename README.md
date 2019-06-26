@@ -64,7 +64,7 @@ The **package.json** might look like this for the situations mentioned above:
 }
 ```
 
-When simultaneously working on multiple projects each with a different startup command, it could be very troubling and forgetting, especially under heavy cognitive load. As a result, we often waste our precious time consulting the **README** or the **scripts** section in **package.json**.
+When simultaneously working on multiple projects each with a different startup command, it could be very troubling and forgetting, especially under heavy cognitive load. As a result, we often waste our precious time consulting the **README** or the **scripts** field in **package.json**.
 
 ## Solution
 
@@ -85,7 +85,7 @@ When simultaneously working on multiple projects each with a different startup c
 }
 ```
 
-`npm start` has been the de facto way of starting a **Node.js** application for a very long time.
+`npm start` has long been the de facto way of starting a **Node.js** application.
 
 Besides that, to ensure that our application runs in the mode we desired, `NODE_ENV` is often set as an environment variable. A lot of popular frameworks expect `NODE_ENV` to be set as well.
 
@@ -93,39 +93,77 @@ Why not combine both, so that when we execute `npm start` when `NODE_ENV=product
 
 Similarly, executing `npm start` when `NODE_ENV=development` will spawn `npm run start:development`.
 
-Even when `NODE_ENV=test`, `npm start` can set to spawn `npm run start:test` too. Some might disagree with this and would instead do `npm test`. However, you could set `{ "start:test": "npm test" }` in the **scripts** section of your **package.json** as shown above, so that if you execute `npm start` when `NODE_ENV=test`, `npm test` will eventually get spawned.
+Even when `NODE_ENV=test`, `npm start` can set to spawn `npm run start:test` too. Some might disagree with this and would instead do `npm test`. However, you could set `{ "start:test": "npm test" }` in the **scripts** field as shown in the **package.json** above, so that if you execute `npm start` when `NODE_ENV=test`, `npm test` will be eventually spawned. In this way, the original command `npm test` is still accessible from your shell. So now you have two ways to launch your tests: `npm test` and `NODE_ENV=test npm start`.
 
-Custom **scripts** other than **start** can also be provided in **package.json**. The same applies to custom `NODE_ENV` too. Please refer to more examples below.
+Arbitrary **scripts** and `NODE_ENV` are both supported by **by-node-env**. Please refer to more examples below.
 
-In short, in the context of **by-node-env**, the environment variable `NODE_ENV` acts as a switch to select appropriate **scripts** in **package.json** for execution.
+In short, in the context of **by-node-env**, the environment variable `NODE_ENV` acts as a switch to select the appropriate **scripts** specified in the **package.json** for execution.
 
 ## NODE_ENV
 
-By design, **by-node-env** must resolve `NODE_ENV` ahead of starting your application to select appropriate **scripts** in **package.json** for execution, at the same time set the resolved `NODE_ENV` as `process.env.NODE_ENV` in your application runtime.
+By design, **by-node-env** must resolve `NODE_ENV` ahead of starting your application to select the appropriate **scripts** in your **package.json** for execution. It then set the resolved `NODE_ENV` as `process.env.NODE_ENV` in your application runtime.
 
 The priority order of resolving `NODE_ENV` is as follows:
 
 1. Environment variable.
-
-2. **.env** file in the project root directory.
-
+2. **.env** file in your project root directory.
 3. Defaults to `development`.
 
-Whichever `NODE_ENV` found first takes precedence.
+Whichever `NODE_ENV` found first will take precedence.
 
 **by-node-env** will only set `process.env.NODE_ENV` of your application to `NODE_ENV` it resolved. Other environment variables will be passed as is to your application in `process.env`. If a **.env** file is present in your project root directory, all entries except `NODE_ENV` are ignored.
 
-In other words, **by-node-env** will not manipulate your application's environment variables except `NODE_ENV`.
+In other words, **by-node-env** will not try to manipulate any environment variable of your application except `NODE_ENV`.
 
-## Example 1
+## Pre and Post Scripts
 
-### Example 1: .env
+Both *pre* and *post* **scripts** of **package.json** are supported by **by-node-env**.
+
+Given a **package.json** with *pre* and *post* **scripts** below:
+
+```jsonc
+{
+  "scripts": {
+    "prestart": "echo prestart",                              // 1
+    "start": "echo start && by-node-env",                     // 2
+
+    "prestart:development": "echo prestart:development",      // 3
+    "start:development": "echo start:development",            // 4
+    "poststart:development": "echo poststart:development",    // 5
+
+    "prestart:production": "echo prestart:production",        // 3
+    "start:production": "echo start:production",              // 4
+    "poststart:production": "echo poststart:production",      // 5
+
+    "poststart": "echo poststart"                             // 6
+  }
+}
+```
+
+The outputs of executing `NODE_ENV=production npm start` in ascending order are as follows:
+
+1. `prestart`
+2. `start`
+3. `prestart:production`
+4. `start:production`
+5. `poststart:production`
+6. `poststart`
+
+This output order also implies the execution order of the **scripts**.
+
+Any arbitrary **scripts** (other than *start*) and its corresponding *pre* and *post* **scripts** are also supported by **by-node-env**.
+
+## Examples
+
+### Example 1
+
+#### Example 1: .env
 
 ```ini
 NODE_ENV=production
 ```
 
-### Example 1: package.json
+#### Example 1: package.json
 
 ```jsonc
 {
@@ -133,15 +171,15 @@ NODE_ENV=production
     // This will run "start:production" since .env file is present and NODE_ENV is defined in it.
     "start": "by-node-env",
 
-    "start:development": "ts-node .",
-    "start:production": "ts-node-dev ."
+    "start:development": "ts-node src",
+    "start:production": "ts-node-dev src"
   }
 }
 ```
 
-## Example 2
+### Example 2
 
-### Example 2: package.json
+#### Example 2: package.json
 
 ```jsonc
 {
