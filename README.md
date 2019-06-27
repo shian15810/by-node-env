@@ -29,8 +29,8 @@ yarn add by-node-env
 
 ## Features
 
-- [x] Read `NODE_ENV` as environment variable from `process.env`.
-- [x] Read `NODE_ENV` from **.env** file in your project root directory.
+- [x] Read `NODE_ENV` from `process.env`.
+- [x] Read `NODE_ENV` from **.env** file.
 - [x] Defaults `NODE_ENV` to `development`.
 - [x] Customize `process.env` for each `NODE_ENV`.
 - [x] Clearer, concise **scripts** in **package.json**.
@@ -43,65 +43,60 @@ yarn add by-node-env
 
 ## Problem
 
-When developing a **Node.js** application in `development` mode, we often start our application with one of these different commands: `npm start`, `npm run dev`, `npm run serve`, etc. In addition, we also explicitly set `NODE_ENV=development` as an environment variable for our application to work as expected.
+When developing a **Node.js** application in `development` mode, we often use these different commands: `npm run serve`, `npm run watch`, `npm run dev`, etc. In addition, we also set `NODE_ENV=development` as an environment variable for our application.
 
-When deploying to `production`, we often use one of these different commands: `npm start`, `npm run prod`, `npm run serve`, etc. `NODE_ENV=production` is a must-have environment variable in this situation.
+When deploying to `production`, we often use these different commands: `npm start`, `npm build`, `npm run prod`, etc. `NODE_ENV=production` is a must-have environment variable in this case.
 
-The **package.json** might look like this for the situations mentioned above:
+The **package.json** might look like this for those situations mentioned above:
 
-```jsonc
+```json
 {
   "scripts": {
-    // Different scripts for each NODE_ENV.
-    "dev": "NODE_ENV=development node src",
-    "prod": "NODE_ENV=production node build",
+    "watch": "webpack -d --watch",
+    "build": "webpack -p",
 
-    "serve": "npm run dev",
-    "start": "npm run prod",
+    "dev": "nodemon src",
+    "prod": "node dist",
 
-    "test": "jest"
+    "serve": "npm run watch & npm run dev",
+    "start": "npm build && npm run prod"
   }
 }
 ```
 
-When simultaneously working on multiple projects each with a different startup command, it could be very troubling and forgetting, especially under heavy cognitive load. As a result, we often waste our precious time consulting the **README** or the **scripts** field in **package.json**.
+When working on multiple projects with different commands, it can be very confusing and forgetting, especially under heavy cognitive load. As a result, we spend a lot of time consulting the **README** or the **scripts** field in **package.json**.
 
 ## Solution
 
 ### package.json
 
-```jsonc
+```json
 {
   "scripts": {
+    "build": "by-node-env",
+
+    "build:development": "webpack -d --watch",
+    "build:production": "webpack -p",
+
     "start": "by-node-env",
 
-    // Listing all start scripts by NODE_ENV like this is way more concise and explicit.
-    "start:development": "node src",
-    "start:test": "npm test",
-    "start:production": "node build",
-
-    "test": "jest"
+    "start:development": "npm build & nodemon src",
+    "start:production": "npm build && node dist"
   }
 }
 ```
 
-`npm start` has long been the de facto way of starting a **Node.js** application.
+`npm build` and `npm start` have long been the de facto commands to *build* and *start* a **Node.js** application, respectively.
 
-Besides that, to ensure that our application runs in the mode we desired, `NODE_ENV` is often set as an environment variable. A lot of popular frameworks expect `NODE_ENV` to be set as well.
+As a best practice, `NODE_ENV` should always be explicitly set as an environment variable. A lot of popular frameworks expect `NODE_ENV` to be set as well.
 
-Why not combine both, so that when we execute `npm start` when `NODE_ENV=production`, `npm run start:production` will be spawned.
+Why not combine both, so that when `NODE_ENV=production`, executing `npm start` will spawn `npm run start:production`. Similarly, when `NODE_ENV=development`, executing `npm start` will spawn `npm run start:development`.
 
-Similarly, executing `npm start` when `NODE_ENV=development` will spawn `npm run start:development`.
+Arbitrary `NODE_ENV` and **scripts** work too, refer to more examples below.
 
-Even when `NODE_ENV=test`, `npm start` can set to spawn `npm run start:test` too. Some might disagree with this and would instead do `npm test`. However, you could set `{ "start:test": "npm test" }` in the **scripts** field as shown in the **package.json** above, so that if you execute `npm start` when `NODE_ENV=test`, `npm test` will be eventually spawned. In this way, the original command `npm test` is still accessible from your shell. So now you have two ways to launch your tests: `npm test` and `NODE_ENV=test npm start`.
-
-Arbitrary **scripts** and `NODE_ENV` are both supported by **by-node-env**. Please refer to more examples below.
-
-In short, in the context of **by-node-env**, the environment variable `NODE_ENV` acts as a switch to select the appropriate **scripts** specified in the **package.json** for execution.
+In short, **by-node-env** spawns the selected **script** determined by the resolved `NODE_ENV`.
 
 ## NODE_ENV
-
-By design, **by-node-env** must resolve `NODE_ENV` ahead of starting your application to select the appropriate **scripts** in your **package.json** for execution. It then set the resolved `NODE_ENV` as `process.env.NODE_ENV` in your application runtime.
 
 The priority order of resolving `NODE_ENV` is as follows:
 
