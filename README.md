@@ -43,7 +43,7 @@ yarn add by-node-env
 
 ## Problem
 
-When developing a **Node.js** application in `development` mode, we often use these different commands: `npm run serve`, `npm run watch`, `npm run dev`, etc. In addition, we also set `NODE_ENV=development` as an environment variable for our application.
+When developing a **Node.js** application in `development` mode, we often use these different commands: `npm run serve`, `npm run watch`, `npm run dev`, etc. In addition, we also set `NODE_ENV=development` as an environment variable.
 
 When deploying to `production`, we often use these different commands: `npm start`, `npm build`, `npm run prod`, etc. `NODE_ENV=production` is a must-have environment variable in this case.
 
@@ -64,7 +64,7 @@ The **package.json** might look like this for those situations mentioned above:
 }
 ```
 
-When working on multiple projects with different commands, it can be very confusing and forgetting, especially under heavy cognitive load. As a result, we spend a lot of time consulting the **README** or the **scripts** field in **package.json**.
+Working on multiple projects with different commands can be very confusing and forgetting, especially under heavy cognitive load. As a result, we spend a lot of time consulting the **README** or the **scripts** field in **package.json**.
 
 ## Solution
 
@@ -94,59 +94,43 @@ Why not combine both, so that when `NODE_ENV=production`, executing `npm start` 
 
 Arbitrary `NODE_ENV` and **scripts** work too, refer to more examples below.
 
-In short, **by-node-env** spawns the selected **script** determined by the resolved `NODE_ENV`.
-
 ## NODE_ENV
 
 The priority order of resolving `NODE_ENV` is as follows:
 
 1. Environment variable.
-2. **.env** file in your project root directory.
-3. Defaults to `development`.
+2. **.env** file.
+3. `development` (default).
 
-Whichever `NODE_ENV` found first will take precedence.
-
-**by-node-env** will only set `process.env.NODE_ENV` of your application to `NODE_ENV` it resolved. Other environment variables will be passed as is to your application in `process.env`. If a **.env** file is present in your project root directory, all entries except `NODE_ENV` are ignored.
-
-In other words, **by-node-env** will not try to manipulate any environment variable of your application except `NODE_ENV`.
+The resolved `NODE_ENV` is available as `process.env.NODE_ENV` in your application at runtime.
 
 ## Pre and Post Scripts
 
-Both *pre* and *post* **scripts** of **package.json** are supported by **by-node-env**.
-
-Given a **package.json** with *pre* and *post* **scripts** below:
+Given a **package.json** with *pre* and *post* **scripts** as shown below:
 
 ```jsonc
 {
   "scripts": {
     "prestart": "echo prestart",                              // 1
-    "start": "echo start && by-node-env",                     // 2
 
-    "prestart:development": "echo prestart:development",      // 3
-    "start:development": "echo start:development",            // 4
-    "poststart:development": "echo poststart:development",    // 5
+    "start": "by-node-env",                                   // 2
 
-    "prestart:production": "echo prestart:production",        // 3
-    "start:production": "echo start:production",              // 4
-    "poststart:production": "echo poststart:production",      // 5
+    "prestart:development": "echo prestart:development",      // 3a
+    "start:development": "echo start:development",            // 4a
+    "poststart:development": "echo poststart:development",    // 5a
+
+    "prestart:production": "echo prestart:production",        // 3b
+    "start:production": "echo start:production",              // 4b
+    "poststart:production": "echo poststart:production",      // 5b
 
     "poststart": "echo poststart"                             // 6
   }
 }
 ```
 
-The outputs of executing `NODE_ENV=production npm start` in ascending order are as follows:
+Executing `NODE_ENV=development npm start` will trigger: `1` :arrow_right: `2` :arrow_right: `3a` :arrow_right: `4a` :arrow_right: `5a` :arrow_right: `6`.
 
-1. `prestart`
-2. `start`
-3. `prestart:production`
-4. `start:production`
-5. `poststart:production`
-6. `poststart`
-
-This output order also implies the execution order of the **scripts**.
-
-Any arbitrary **scripts** (other than *start*) and its corresponding *pre* and *post* **scripts** are also supported by **by-node-env**.
+Executing `NODE_ENV=production npm start` will trigger: `1` :arrow_right: `2` :arrow_right: `3b` :arrow_right: `4b` :arrow_right: `5b` :arrow_right: `6`.
 
 ## Examples
 
