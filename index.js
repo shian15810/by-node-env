@@ -45,7 +45,6 @@ if (require.main === module || !module.parent) {
   );
 
   var options = {
-    cwd: process.cwd(),
     env: env,
     stdio: 'inherit',
   };

@@ -88,7 +88,7 @@ Working on multiple projects with different commands can be very confusing and f
 
 `npm build` and `npm start` have long been the de facto commands to *build* and *start* a **Node.js** application, respectively.
 
-As a best practice, `NODE_ENV` should always be explicitly set as an environment variable. A lot of popular frameworks expect `NODE_ENV` to be set as well.
+Besides that, `NODE_ENV` should always be explicitly set as an environment variable for best practice. A lot of popular frameworks expect `NODE_ENV` to be set as well.
 
 Why not combine both, so that when `NODE_ENV=production`, executing `npm start` will spawn `npm run start:production`. Similarly, when `NODE_ENV=development`, executing `npm start` will spawn `npm run start:development`.
 
