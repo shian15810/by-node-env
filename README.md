@@ -99,62 +99,58 @@ Arbitrary `NODE_ENV` and **scripts** work too, refer to more examples below.
 The priority order of resolving `NODE_ENV` is as follows:
 
 1. Environment variable.
-2. **.env** file.
+2. **.env** file in project root directory.
 3. `development` (default).
+
+The **.env** file, if present, must be located in the root directory of your project, where **package.json** lie.
 
 The resolved `NODE_ENV` is available as `process.env.NODE_ENV` in your application at runtime.
 
-## Pre and Post Scripts
+## Examples
 
-Given a **package.json** with *pre* and *post* **scripts** as shown below:
+### Example 1a
+
+#### Example 1a: package.json
 
 ```jsonc
 {
   "scripts": {
-    "prestart": "echo prestart",                              // 1
+    "start": "by-node-env",                 // 1
 
-    "start": "by-node-env",                                   // 2
-
-    "prestart:development": "echo prestart:development",      // 3a
-    "start:development": "echo start:development",            // 4a
-    "poststart:development": "echo poststart:development",    // 5a
-
-    "prestart:production": "echo prestart:production",        // 3b
-    "start:production": "echo start:production",              // 4b
-    "poststart:production": "echo poststart:production",      // 5b
-
-    "poststart": "echo poststart"                             // 6
+    "start:development": "ts-node src",     // 2a
+    "start:production": "ts-node-dev src"   // 2b
   }
 }
 ```
 
-Executing `NODE_ENV=development npm start` will trigger: `1` :arrow_right: `2` :arrow_right: `3a` :arrow_right: `4a` :arrow_right: `5a` :arrow_right: `6`.
+1. `npm start`: **1** :arrow_right: **2a**
+2. `NODE_ENV=development npm start`: **1** :arrow_right: **2a**
+3. `NODE_ENV=production npm start`: **1** :arrow_right: **2b**
 
-Executing `NODE_ENV=production npm start` will trigger: `1` :arrow_right: `2` :arrow_right: `3b` :arrow_right: `4b` :arrow_right: `5b` :arrow_right: `6`.
+### Example 1b
 
-## Examples
-
-### Example 1
-
-#### Example 1: .env
+#### Example 1b: .env
 
 ```ini
 NODE_ENV=production
 ```
 
-#### Example 1: package.json
+#### Example 1b: package.json
 
 ```jsonc
 {
   "scripts": {
-    // This will run "start:production" since .env file is present and NODE_ENV is defined in it.
-    "start": "by-node-env",
+    "start": "by-node-env",                 // 1
 
-    "start:development": "ts-node src",
-    "start:production": "ts-node-dev src"
+    "start:development": "ts-node src",     // 2a
+    "start:production": "ts-node-dev src"   // 2b
   }
 }
 ```
+
+1. `npm start`: **1** :arrow_right: **2b**
+2. `NODE_ENV=development npm start`: **1** :arrow_right: **2a**
+3. `NODE_ENV=production npm start`: **1** :arrow_right: **2b**
 
 ### Example 2
 
@@ -162,13 +158,6 @@ NODE_ENV=production
 
 ```jsonc
 {
-  // Processes spawned by by-node-env inherit environment-specific variables, if defined.
-  "by-node-env": {
-    "production": {
-      "DOCKER_USER": "my",
-      "DOCKER_REPO": "project"
-    }
-  },
   "scripts": {
     // If NODE_ENV is missing, defaults to "development".
     "build": "by-node-env",
@@ -201,21 +190,6 @@ NODE_ENV=production
   }
 }
 ```
-
-## Notes
-
-- **by-node-env** is essentially a clone of [**per-env**](https://www.npmjs.com/package/per-env) with some notable fixes:
-
-  - **.env** (`NODE_ENV` only) support.
-  - **pnpm** compatibility.
-  - **Windows** compatibility.
-  - **Yarn** compatibility.
-
-- The **.env** file is parsed using [**dotenv**](https://www.npmjs.com/package/dotenv).
-
-- This package might support more **.env** files in the future, as documented by **create-react-app** [here](https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables#what-other-env-files-can-be-used).
-
-- Option to specify a custom file path for the **.env** file is not yet implemented, please raise an issue or PR if you need this feature.
 
 ## Contributing
 

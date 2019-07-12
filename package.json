@@ -45,16 +45,12 @@
     "prepublishOnly": "npm run test"
   },
   "dependencies": {
+    "commander": "^2.20.0",
     "cross-spawn": "^6.0.5",
     "dotenv": "^8.0.0",
     "which-pm-runs": "^1.0.0"
   },
   "devDependencies": {
     "cross-env": "^5.2.0"
-  },
-  "by-node-env": {
-    "development": {
-      "CUSTOM_ENV": "dev"
-    }
   }
 }
