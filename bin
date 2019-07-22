@@ -22,21 +22,25 @@ program
   .description(packageJson.description)
   .parse(process.argv);
 
-var envFile = program.envFile;
-if (envFile) {
-  var envPath = path.isAbsolute(envFile)
-    ? envFile
-    : path.resolve(process.cwd(), envFile);
-  var envBuffer = fs.readFileSync(envPath);
-  var envConfig = dotenv.parse(envBuffer);
-  if (envConfig.NODE_ENV) {
-    nodeEnv = envConfig.NODE_ENV;
+if (!process.env.NODE_ENV) {
+  var envFile = program.envFile;
+  if (envFile) {
+    var envPath = path.isAbsolute(envFile)
+      ? envFile
+      : path.resolve(process.cwd(), envFile);
+    var envBuffer = fs.readFileSync(envPath);
+    var envConfig = dotenv.parse(envBuffer);
+    if (envConfig.NODE_ENV) {
+      nodeEnv = envConfig.NODE_ENV;
+    }
   }
 }
 
-var NODE_ENV = process.env.NODE_ENV || nodeEnv;
-
-var env = Object.assign({}, { NODE_ENV: NODE_ENV }, process.env);
+var env = Object.assign(
+  {},
+  { NODE_ENV: process.env.NODE_ENV || nodeEnv },
+  process.env
+);
 
 var pm = whichPMRuns();
 var packageManager = pm && pm.name ? pm.name : env.npm_execpath;
@@ -46,7 +50,6 @@ var script = [
   packageManager ? env.npm_lifecycle_event : "haha",
   env.NODE_ENV
 ].join(":");
-
 var args = ["run", script].concat(getRemainingArgs(program));
 
 var options = { env: env, stdio: "inherit" };
