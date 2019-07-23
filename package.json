@@ -55,6 +55,7 @@
     "@types/dotenv": "^6.1.1",
     "@types/node": "^12.6.8",
     "cross-env": "^5.2.0",
+    "get-bin-path": "^1.0.2",
     "typescript": "^3.5.3"
   }
 }
