@@ -10,9 +10,8 @@ import program from 'commander';
 import getRemainingArgs from 'commander-remaining-args';
 import spawn from 'cross-spawn';
 import dotenv from 'dotenv';
+import readPkgUp from 'read-pkg-up';
 import whichPMRuns from 'which-pm-runs';
-
-import packageJson from '../package.json';
 
 type ProcessEnv = NodeJS.ProcessEnv & { NODE_ENV: string };
 
@@ -33,6 +32,7 @@ const getEnv = ({
       : path.resolve(process.cwd(), envFile);
     const envBuffer = fs.readFileSync(envPath);
     const envConfig = dotenv.parse(envBuffer);
+
     if (envConfig.NODE_ENV) {
       return { ...env, NODE_ENV: envConfig.NODE_ENV };
     }
@@ -101,14 +101,25 @@ if (require.main === module || !module.parent) {
     .option(
       '-p, --package-manager <pm>',
       'specify package manager to run script',
-    )
-    .version(packageJson.version)
-    .description(packageJson.description)
-    .parse(process.argv);
+    );
+
+  const packageJson = readPkgUp.sync({ cwd: __dirname });
+
+  if (packageJson) {
+    const normalizedPackageJson = packageJson.package;
+
+    if (normalizedPackageJson.description) {
+      program.description(normalizedPackageJson.description);
+    }
+
+    program.version(normalizedPackageJson.version);
+  }
+
+  program.parse(process.argv);
 
   const { envFile, packageManager } = program;
   const remainingArgs = getRemainingArgs(program);
-  const runScript = process.env.npm_lifecycle_event || '';
+  const runScript = process.env.npm_lifecycle_event;
 
   byNodeEnv({ envFile, packageManager, remainingArgs, runScript });
 }
