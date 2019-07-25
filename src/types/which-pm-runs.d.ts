@@ -1,3 +1,5 @@
-module "which-pm-runs" {
-  export default function(): undefined | { name: string; version: string };
+module 'which-pm-runs' {
+  function whichPMRuns(): undefined | { name: string; version: string };
+
+  export default whichPMRuns;
 }
