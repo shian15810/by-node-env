@@ -31,7 +31,8 @@
   "bin": "./bin",
   "repository": "https://github.com/shian15810/by-node-env.git",
   "scripts": {
-    "test": "node bin && cross-env NODE_ENV=test node bin",
+    "build": "tsc",
+    "test": "node build && cross-env NODE_ENV=test node build",
     "pretest:development": "node test.js",
     "test:development": "node test.js",
     "posttest:development": "node test.js",
@@ -44,10 +45,20 @@
     "commander": "^2.20.0",
     "commander-remaining-args": "^1.2.0",
     "cross-spawn": "^6.0.5",
+    "deasync": "^0.1.15",
     "dotenv": "^8.0.0",
+    "execa": "^2.0.3",
+    "preferred-pm": "^2.0.0",
+    "read-pkg-up": "^6.0.0",
     "which-pm-runs": "^1.0.0"
   },
   "devDependencies": {
-    "cross-env": "^5.2.0"
+    "@types/commander-remaining-args": "^1.2.0",
+    "@types/cross-spawn": "^6.0.0",
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^12.6.8",
+    "cross-env": "^5.2.0",
+    "get-bin-path": "^1.0.2",
+    "typescript": "^3.5.3"
   }
 }
