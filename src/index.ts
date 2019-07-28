@@ -4,67 +4,47 @@
 
 import cp from 'child_process';
 
-import program from 'commander';
-import getRemainingArgs from 'commander-remaining-args';
 import spawn from 'cross-spawn';
-import readPkgUp from 'read-pkg-up';
 
 import {
   getPreferredPackageManager,
   getRunningPackageManager,
 } from './package-manager';
-import { getProcessEnv, getRunScript, ProcessEnv } from './env';
+import { getProcessEnv, ProcessEnv } from './process-env';
+import { getProgram } from './program';
+import { getRemainingArgv } from './remaining-argv';
+import { getRunScript } from './run-script';
 
 const byNodeEnv = ({
   packageManager,
   processEnv,
-  remainingArgs,
+  remainingArgv,
   runScript,
 }: {
   packageManager: string;
   processEnv: ProcessEnv;
-  remainingArgs: string[];
+  remainingArgv: string[];
   runScript: string;
 }) => {
   const command = packageManager;
-  const args = ['run', `${runScript}:${processEnv.NODE_ENV}`, ...remainingArgs];
+  const args = ['run', `${runScript}:${processEnv.NODE_ENV}`, ...remainingArgv];
   const options: cp.SpawnSyncOptions = { env: processEnv, stdio: 'inherit' };
 
   spawn.sync(command, args, options);
 };
 
 if (require.main === module || !module.parent) {
-  const processCwd = __dirname;
+  const processArgv = process.argv;
+  const processCwd = process.cwd();
   const processEnv = process.env;
 
-  program
-    .allowUnknownOption()
-    .option('-e, --env-file <path>', 'specify path to .env file')
-    .option(
-      '-p, --package-manager <pm>',
-      'specify package manager to run script',
-    );
-
-  const packageJson = readPkgUp.sync({ cwd: processCwd });
-
-  if (packageJson) {
-    const normalizedPackageJson = packageJson.package;
-
-    if (normalizedPackageJson.description) {
-      program.description(normalizedPackageJson.description);
-    }
-
-    program.version(normalizedPackageJson.version);
-  }
-
-  program.parse(process.argv);
-
+  const program = getProgram({ processArgv });
   const { envFile, packageManager } = program;
 
   byNodeEnv({
     packageManager: getRunningPackageManager({ packageManager, processEnv }),
-    processEnv: getProcessEnv({ envFile, processEnv }),
-    remainingArgs: getRemainingArgs(program),
+    processEnv: getProcessEnv({ envFile, processCwd, processEnv }),
+    remainingArgv: getRemainingArgv({ program }),
     runScript: getRunScript({ processEnv }),
   });
 }
@@ -74,25 +54,24 @@ export default ({
   packageManager,
   processCwd = process.cwd(),
   processEnv = process.env,
-  remainingArgs = [],
-  runScript = 'start',
+  remainingArgv,
+  runScript,
 }: {
   envFile?: string;
   packageManager?: string;
   processCwd?: string;
   processEnv?: NodeJS.ProcessEnv;
-  remainingArgs?: string[];
+  remainingArgv?: string[];
   runScript?: string;
 } = {}) => {
-  getPreferredPackageManager({
-    packageManager: getRunningPackageManager({ packageManager, processEnv }),
-    processCwd,
-  }).then((preferredPackageManager) => {
-    byNodeEnv({
-      packageManager: preferredPackageManager,
-      processEnv: getProcessEnv({ envFile, processEnv }),
-      remainingArgs,
-      runScript,
-    });
-  });
+  getPreferredPackageManager({ packageManager, processCwd, processEnv }).then(
+    (preferredPackageManager) => {
+      byNodeEnv({
+        packageManager: preferredPackageManager,
+        processEnv: getProcessEnv({ envFile, processCwd, processEnv }),
+        remainingArgv: getRemainingArgv({ remainingArgv }),
+        runScript: getRunScript({ processEnv, runScript }),
+      });
+    },
+  );
 };

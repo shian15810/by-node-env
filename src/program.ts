@@ -1,26 +1,27 @@
 import program from 'commander';
-import readPkgUp from 'read-pkg-up';
 
-program
-  .allowUnknownOption()
-  .option('-e, --env-file <path>', 'specify path to .env file')
-  .option(
-    '-p, --package-manager <pm>',
-    'specify package manager to run script',
-  );
+import { getPackageJson } from './package-json';
 
-const packageJson = readPkgUp.sync({ cwd: __dirname });
+export const getProgram = ({ processArgv }: { processArgv: string[] }) => {
+  program
+    .allowUnknownOption()
+    .option('-e, --env-file <path>', 'specify path to .env file')
+    .option(
+      '-p, --package-manager <pm>',
+      'specify package manager to run script',
+    );
 
-if (packageJson) {
-  const normalizedPackageJson = packageJson.package;
+  const packageJson = getPackageJson({ processCwd: __dirname });
 
-  if (normalizedPackageJson.description) {
-    program.description(normalizedPackageJson.description);
+  if (packageJson) {
+    if (packageJson.description) {
+      program.description(packageJson.description);
+    }
+
+    program.version(packageJson.version);
   }
 
-  program.version(normalizedPackageJson.version);
-}
+  program.parse(processArgv);
 
-program.parse(process.argv);
-
-export default program;
+  return program;
+};

@@ -32,7 +32,7 @@
   "repository": "https://github.com/shian15810/by-node-env.git",
   "scripts": {
     "build": "tsc",
-    "test": "node build && cross-env NODE_ENV=test node build",
+    "test": "node dist && cross-env NODE_ENV=test node dist",
     "pretest:development": "node test.js",
     "test:development": "node test.js",
     "posttest:development": "node test.js",
@@ -59,6 +59,9 @@
     "@types/node": "^12.6.8",
     "cross-env": "^5.2.0",
     "get-bin-path": "^1.0.2",
+    "microbundle": "^0.11.0",
+    "ts-node": "^8.3.0",
+    "ts-node-dev": "^1.0.0-pre.40",
     "typescript": "^3.5.3"
   }
 }

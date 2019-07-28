@@ -16,7 +16,7 @@
     "declarationMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "build",
+    "outDir": "dist",
     "sourceMap": true
   },
   "include": ["src"]
