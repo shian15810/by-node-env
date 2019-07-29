@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 
-module 'commander' {
+declare module 'commander' {
   interface CommanderStatic extends Command {
     envFile?: string;
     packageManager?: string;

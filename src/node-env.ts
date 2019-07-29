@@ -4,22 +4,22 @@ import path from 'path';
 import dotenv from 'dotenv';
 
 export const getNodeEnv = ({
+  cwd,
+  env,
   envFile,
-  processCwd,
-  processEnv,
 }: {
+  cwd: string;
+  env: NodeJS.ProcessEnv;
   envFile?: string;
-  processCwd: string;
-  processEnv: NodeJS.ProcessEnv;
 }) => {
-  if (processEnv.NODE_ENV) {
-    return processEnv.NODE_ENV;
+  if (env.NODE_ENV) {
+    return env.NODE_ENV;
   }
 
   if (envFile) {
     const envPath = path.isAbsolute(envFile)
       ? path.resolve(envFile)
-      : path.resolve(processCwd, envFile);
+      : path.resolve(cwd, envFile);
     const envBuffer = fs.readFileSync(envPath);
     const envConfig = dotenv.parse(envBuffer);
 

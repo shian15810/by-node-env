@@ -1,76 +1,72 @@
 #!/usr/bin/env node
 
-'use strict';
-
-import cp from 'child_process';
-
-import spawn from 'cross-spawn';
+import execa from 'execa';
 
 import {
   getPreferredPackageManager,
   getRunningPackageManager,
 } from './package-manager';
-import { getProcessEnv, ProcessEnv } from './process-env';
+import { getEnv } from './env';
 import { getProgram } from './program';
-import { getRemainingArgv } from './remaining-argv';
-import { getRunScript } from './run-script';
+import { getArgs } from './args';
+import { getRun } from './run';
 
 const byNodeEnv = ({
+  args,
+  env,
   packageManager,
-  processEnv,
-  remainingArgv,
-  runScript,
+  run,
 }: {
+  args: string[];
+  env: ReturnType<typeof getEnv>;
   packageManager: string;
-  processEnv: ProcessEnv;
-  remainingArgv: string[];
-  runScript: string;
+  run: string;
 }) => {
   const command = packageManager;
-  const args = ['run', `${runScript}:${processEnv.NODE_ENV}`, ...remainingArgv];
-  const options: cp.SpawnSyncOptions = { env: processEnv, stdio: 'inherit' };
+  const args = ['run', `${run}:${env.NODE_ENV}`, ...args];
+  const options: execa.SyncOptions = { env, stdio: 'inherit' };
 
-  spawn.sync(command, args, options);
+  execa.sync(command, args, options);
 };
 
 if (require.main === module || !module.parent) {
-  const processArgv = process.argv;
-  const processCwd = process.cwd();
-  const processEnv = process.env;
+  const argv = process.argv;
+  const cwd = process.cwd();
+  const env = process.env;
 
-  const program = getProgram({ processArgv });
+  const program = getProgram({ argv });
   const { envFile, packageManager } = program;
 
   byNodeEnv({
-    packageManager: getRunningPackageManager({ packageManager, processEnv }),
-    processEnv: getProcessEnv({ envFile, processCwd, processEnv }),
-    remainingArgv: getRemainingArgv({ program }),
-    runScript: getRunScript({ processEnv }),
+    args: getArgs({ program }),
+    env: getEnv({ cwd, env, envFile }),
+    packageManager: getRunningPackageManager({ env, packageManager }),
+    run: getRun({ env }),
   });
 }
 
 export default ({
+  args,
+  cwd = process.cwd(),
+  env = process.env,
   envFile,
   packageManager,
-  processCwd = process.cwd(),
-  processEnv = process.env,
-  remainingArgv,
-  runScript,
+  run,
 }: {
   envFile?: string;
   packageManager?: string;
-  processCwd?: string;
-  processEnv?: NodeJS.ProcessEnv;
-  remainingArgv?: string[];
-  runScript?: string;
+  cwd?: string;
+  env?: NodeJS.ProcessEnv;
+  args?: string[];
+  run?: string;
 } = {}) => {
-  getPreferredPackageManager({ packageManager, processCwd, processEnv }).then(
+  getPreferredPackageManager({ cwd, env, packageManager }).then(
     (preferredPackageManager) => {
       byNodeEnv({
+        args: getArgs({ args }),
+        env: getEnv({ cwd, env, envFile }),
         packageManager: preferredPackageManager,
-        processEnv: getProcessEnv({ envFile, processCwd, processEnv }),
-        remainingArgv: getRemainingArgv({ remainingArgv }),
-        runScript: getRunScript({ processEnv, runScript }),
+        run: getRun({ env, run }),
       });
     },
   );

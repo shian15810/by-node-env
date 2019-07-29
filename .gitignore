@@ -1,2 +1,5 @@
-/dist
+.DS_Store
+/.rts2_cache_*
+/dist/*
+!/dist/index.*
 /node_modules

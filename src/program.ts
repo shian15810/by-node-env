@@ -2,7 +2,7 @@ import program from 'commander';
 
 import { getPackageJson } from './package-json';
 
-export const getProgram = ({ processArgv }: { processArgv: string[] }) => {
+export const getProgram = ({ argv }: { argv: string[] }) => {
   program
     .allowUnknownOption()
     .option('-e, --env-file <path>', 'specify path to .env file')
@@ -11,7 +11,7 @@ export const getProgram = ({ processArgv }: { processArgv: string[] }) => {
       'specify package manager to run script',
     );
 
-  const packageJson = getPackageJson({ processCwd: __dirname });
+  const packageJson = getPackageJson({ cwd: __dirname });
 
   if (packageJson) {
     if (packageJson.description) {
@@ -21,7 +21,7 @@ export const getProgram = ({ processArgv }: { processArgv: string[] }) => {
     program.version(packageJson.version);
   }
 
-  program.parse(processArgv);
+  program.parse(argv);
 
   return program;
 };

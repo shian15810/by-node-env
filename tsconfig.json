@@ -1,23 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["esnext"],
-    // "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    // "isolatedModules": true,
     "declaration": true,
     "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "lib": ["esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext"
   },
-  "include": ["src"]
+  "include": ["src", "types"]
 }

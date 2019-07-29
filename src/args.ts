@@ -1,15 +1,15 @@
 import { CommanderStatic } from 'commander';
 import getRemainingArgs from 'commander-remaining-args';
 
-export const getRemainingArgv = ({
+export const getArgs = ({
+  args,
   program,
-  remainingArgv,
 }: {
+  args?: string[];
   program?: CommanderStatic;
-  remainingArgv?: string[];
 }) => {
-  if (remainingArgv) {
-    return remainingArgv;
+  if (args) {
+    return args;
   }
 
   if (program) {

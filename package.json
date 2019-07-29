@@ -28,10 +28,18 @@
   "bugs": "https://github.com/shian15810/by-node-env/issues",
   "license": "MIT",
   "author": "Chuah Chee Shian <shian15810@gmail.com>",
-  "bin": "./bin",
+  "files": [
+    "dist/index.*"
+  ],
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "source": "src/index.ts",
+  "umd:main": "dist/index.umd.js",
   "repository": "https://github.com/shian15810/by-node-env.git",
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf dist && microbundle build --strict --target node",
     "test": "node dist && cross-env NODE_ENV=test node dist",
     "pretest:development": "node test.js",
     "test:development": "node test.js",
@@ -44,8 +52,6 @@
   "dependencies": {
     "commander": "^2.20.0",
     "commander-remaining-args": "^1.2.0",
-    "cross-spawn": "^6.0.5",
-    "deasync": "^0.1.15",
     "dotenv": "^8.0.0",
     "execa": "^2.0.3",
     "preferred-pm": "^2.0.0",
@@ -54,14 +60,12 @@
   },
   "devDependencies": {
     "@types/commander-remaining-args": "^1.2.0",
-    "@types/cross-spawn": "^6.0.0",
     "@types/dotenv": "^6.1.1",
     "@types/node": "^12.6.8",
     "cross-env": "^5.2.0",
     "get-bin-path": "^1.0.2",
     "microbundle": "^0.11.0",
-    "ts-node": "^8.3.0",
-    "ts-node-dev": "^1.0.0-pre.40",
+    "rimraf": "^2.6.3",
     "typescript": "^3.5.3"
   }
 }

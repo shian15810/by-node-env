@@ -3,12 +3,8 @@ import whichPMRuns from 'which-pm-runs';
 
 import { getPackageJson } from './package-json';
 
-const getPackageManagerFromPackageJson = ({
-  processCwd,
-}: {
-  processCwd: string;
-}) => {
-  const packageJson = getPackageJson({ processCwd });
+const getPackageManagerFromPackageJson = ({ cwd }: { cwd: string }) => {
+  const packageJson = getPackageJson({ cwd });
 
   if (packageJson && packageJson.engines) {
     const { node, ...engines } = packageJson.engines;
@@ -20,15 +16,17 @@ const getPackageManagerFromPackageJson = ({
       return packageManagers[0];
     }
   }
+
+  return undefined;
 };
 
 const getPackageManagerFromProcessEnv = ({
-  processEnv,
+  env,
 }: {
-  processEnv: NodeJS.ProcessEnv;
+  env: NodeJS.ProcessEnv;
 }) => {
-  if (processEnv.npm_execpath) {
-    return processEnv.npm_execpath;
+  if (env.npm_execpath) {
+    return env.npm_execpath;
   }
 
   const pm = whichPMRuns();
@@ -36,37 +34,39 @@ const getPackageManagerFromProcessEnv = ({
   if (pm) {
     return pm.name;
   }
+
+  return undefined;
 };
 
 export const getPreferredPackageManager = async ({
+  cwd,
+  env,
   packageManager,
-  processCwd,
-  processEnv,
 }: {
+  cwd: string;
+  env: NodeJS.ProcessEnv;
   packageManager?: string;
-  processCwd: string;
-  processEnv: NodeJS.ProcessEnv;
 }) => {
   if (packageManager) {
     return packageManager;
   }
 
   const packageManagerFromProcessEnv = getPackageManagerFromProcessEnv({
-    processEnv,
+    env,
   });
 
   if (packageManagerFromProcessEnv) {
     return packageManagerFromProcessEnv;
   }
 
-  const pm = await preferredPM(processCwd);
+  const pm = await preferredPM(cwd);
 
   if (pm) {
     return pm.name;
   }
 
   const packageManagerFromPackageJson = getPackageManagerFromPackageJson({
-    processCwd,
+    cwd,
   });
 
   if (packageManagerFromPackageJson) {
@@ -77,18 +77,18 @@ export const getPreferredPackageManager = async ({
 };
 
 export const getRunningPackageManager = ({
+  env,
   packageManager,
-  processEnv,
 }: {
+  env: NodeJS.ProcessEnv;
   packageManager?: string;
-  processEnv: NodeJS.ProcessEnv;
 }) => {
   if (packageManager) {
     return packageManager;
   }
 
   const packageManagerFromProcessEnv = getPackageManagerFromProcessEnv({
-    processEnv,
+    env,
   });
 
   if (packageManagerFromProcessEnv) {
