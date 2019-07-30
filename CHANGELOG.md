@@ -35,3 +35,11 @@
 -   Solved some testing issues on **Windows**.
 -   Restructured repository.
 -   Replaced **Yarn** with **npm**.
+
+## 2.0.0 (2019-07-31)
+
+-   Rewritten in [**TypeScript**](https://www.typescriptlang.org/).
+-   Replaced **npm** with **Yarn**.
+-   Exported a default function for programmatic use.
+-   Exposed optional `--env-file` and `--package-manager` options via cli.
+-   **Breaking change**: `.env` file is no longer parsed by default if present. It will only be parsed if provided along with `--env-file` option via cli.
