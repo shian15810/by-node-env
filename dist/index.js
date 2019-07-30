@@ -215,7 +215,7 @@ var byNodeEnv = function (ref) {
     env: processEnv,
     stdio: 'inherit'
   };
-  execa.sync(command, args, options);
+  return execa.sync(command, args, options);
 };
 
 if (require.main === module || !module.parent) {
@@ -227,7 +227,7 @@ if (require.main === module || !module.parent) {
   });
   var envFile = program$1.envFile;
   var packageManager = program$1.packageManager;
-  byNodeEnv({
+  var ref = byNodeEnv({
     packageManager: getRunningPackageManager({
       packageManager: packageManager,
       processEnv: processEnv
@@ -244,6 +244,8 @@ if (require.main === module || !module.parent) {
       processEnv: processEnv
     })
   });
+  var exitCode = ref.exitCode;
+  process.exitCode = exitCode;
 }
 
 var index = (function (ref) {
@@ -255,27 +257,25 @@ var index = (function (ref) {
   var remainingArgv = ref.remainingArgv;
   var runScript = ref.runScript;
 
-  getPreferredPackageManager({
-    packageManager: packageManager,
+  return getPreferredPackageManager({
+  packageManager: packageManager,
+  processCwd: processCwd,
+  processEnv: processEnv
+}).then(function (preferredPackageManager) { return byNodeEnv({
+  packageManager: preferredPackageManager,
+  processEnv: getProcessEnv({
+    envFile: envFile,
     processCwd: processCwd,
     processEnv: processEnv
-  }).then(function (preferredPackageManager) {
-    byNodeEnv({
-      packageManager: preferredPackageManager,
-      processEnv: getProcessEnv({
-        envFile: envFile,
-        processCwd: processCwd,
-        processEnv: processEnv
-      }),
-      remainingArgv: getRemainingArgv({
-        remainingArgv: remainingArgv
-      }),
-      runScript: getRunScript({
-        processEnv: processEnv,
-        runScript: runScript
-      })
-    });
-  });
+  }),
+  remainingArgv: getRemainingArgv({
+    remainingArgv: remainingArgv
+  }),
+  runScript: getRunScript({
+    processEnv: processEnv,
+    runScript: runScript
+  })
+}); });
 });
 
 module.exports = index;

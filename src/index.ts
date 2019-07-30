@@ -26,7 +26,7 @@ const byNodeEnv = ({
   const args = ['run', `${runScript}:${processEnv.NODE_ENV}`, ...remainingArgv];
   const options: execa.SyncOptions = { env: processEnv, stdio: 'inherit' };
 
-  execa.sync(command, args, options);
+  return execa.sync(command, args, options);
 };
 
 if (require.main === module || !module.parent) {
@@ -37,12 +37,14 @@ if (require.main === module || !module.parent) {
   const program = getProgram({ processArgv });
   const { envFile, packageManager } = program;
 
-  byNodeEnv({
+  const { exitCode } = byNodeEnv({
     packageManager: getRunningPackageManager({ packageManager, processEnv }),
     processEnv: getProcessEnv({ envFile, processCwd, processEnv }),
     remainingArgv: getRemainingArgv({ program }),
     runScript: getRunScript({ processEnv }),
   });
+
+  process.exitCode = exitCode;
 }
 
 export default ({
@@ -59,15 +61,13 @@ export default ({
   processEnv?: NodeJS.ProcessEnv;
   remainingArgv?: string[];
   runScript?: string;
-} = {}) => {
+} = {}) =>
   getPreferredPackageManager({ packageManager, processCwd, processEnv }).then(
-    (preferredPackageManager) => {
+    (preferredPackageManager) =>
       byNodeEnv({
         packageManager: preferredPackageManager,
         processEnv: getProcessEnv({ envFile, processCwd, processEnv }),
         remainingArgv: getRemainingArgv({ remainingArgv }),
         runScript: getRunScript({ processEnv, runScript }),
-      });
-    },
+      }),
   );
-};

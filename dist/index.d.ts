@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /// <reference types="node" />
+import execa from 'execa';
 declare const _default: ({ envFile, packageManager, processCwd, processEnv, remainingArgv, runScript, }?: {
     envFile?: string | undefined;
     packageManager?: string | undefined;
@@ -7,6 +8,6 @@ declare const _default: ({ envFile, packageManager, processCwd, processEnv, rema
     processEnv?: NodeJS.ProcessEnv | undefined;
     remainingArgv?: string[] | undefined;
     runScript?: string | undefined;
-}) => void;
+}) => Promise<execa.ExecaSyncReturnValue<string>>;
 export default _default;
 //# sourceMappingURL=index.d.ts.map
