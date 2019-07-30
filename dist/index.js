@@ -11,7 +11,7 @@ var fs = _interopDefault(require('fs'));
 var path = _interopDefault(require('path'));
 var dotenv = _interopDefault(require('dotenv'));
 var program = _interopDefault(require('commander'));
-var getRemainingArgs = _interopDefault(require('commander-remaining-args'));
+var getUnknownArgs = _interopDefault(require('commander-remaining-args'));
 
 var getPackageJson = function (ref) {
   var processCwd = ref.processCwd;
@@ -42,7 +42,7 @@ var getPackageManagerFromPackageJson = function (ref) {
     var engines = rest;
     var packageManagers = Object.keys(engines).filter(function (packageManager) { return packageManager; });
 
-    if (packageManagers.length >= 1) {
+    if (packageManagers[0]) {
       return packageManagers[0];
     }
   }
@@ -156,7 +156,7 @@ var getProcessEnv = function (ref) {
 var getProgram = function (ref) {
   var processArgv = ref.processArgv;
 
-  program.allowUnknownOption().option('-e, --env-file <path>', 'specify path to .env file').option('-p, --package-manager <pm>', 'specify package manager to run script');
+  program.allowUnknownOption().option('-e, --env-file <path>', 'specify path to .env file').option('-p, --package-manager <pm>', 'specify package manager to run-script');
   var packageJson = getPackageJson({
     processCwd: __dirname
   });
@@ -182,7 +182,7 @@ var getRemainingArgv = function (ref) {
   }
 
   if (program$$1) {
-    return getRemainingArgs(program$$1);
+    return getUnknownArgs(program$$1);
   }
 
   return [];

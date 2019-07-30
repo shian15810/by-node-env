@@ -39,6 +39,7 @@
   "umd:main": "dist/index.umd.js",
   "repository": "https://github.com/shian15810/by-node-env.git",
   "scripts": {
+    "format": "prettier --write \"**/*\"",
     "build": "rimraf dist && microbundle build --strict --target node",
     "test": "node dist && cross-env NODE_ENV=test node dist",
     "pretest:development": "node test.js",
@@ -64,8 +65,16 @@
     "@types/node": "^12.6.8",
     "cross-env": "^5.2.0",
     "get-bin-path": "^1.0.2",
+    "husky": "^3.0.2",
     "microbundle": "^0.11.0",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
     "rimraf": "^2.6.3",
     "typescript": "^3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }

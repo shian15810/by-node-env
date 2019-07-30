@@ -6,67 +6,67 @@ import {
   getPreferredPackageManager,
   getRunningPackageManager,
 } from './package-manager';
-import { getEnv } from './env';
+import { getProcessEnv } from './process-env';
 import { getProgram } from './program';
-import { getArgs } from './args';
-import { getRun } from './run';
+import { getRemainingArgv } from './remaining-argv';
+import { getRunScript } from './run-script';
 
 const byNodeEnv = ({
-  args,
-  env,
   packageManager,
-  run,
+  processEnv,
+  remainingArgv,
+  runScript,
 }: {
-  args: string[];
-  env: ReturnType<typeof getEnv>;
   packageManager: string;
-  run: string;
+  processEnv: ReturnType<typeof getProcessEnv>;
+  remainingArgv: string[];
+  runScript: string;
 }) => {
   const command = packageManager;
-  const args = ['run', `${run}:${env.NODE_ENV}`, ...args];
-  const options: execa.SyncOptions = { env, stdio: 'inherit' };
+  const args = ['run', `${runScript}:${processEnv.NODE_ENV}`, ...remainingArgv];
+  const options: execa.SyncOptions = { env: processEnv, stdio: 'inherit' };
 
   execa.sync(command, args, options);
 };
 
 if (require.main === module || !module.parent) {
-  const argv = process.argv;
-  const cwd = process.cwd();
-  const env = process.env;
+  const processArgv = process.argv;
+  const processCwd = process.cwd();
+  const processEnv = process.env;
 
-  const program = getProgram({ argv });
+  const program = getProgram({ processArgv });
   const { envFile, packageManager } = program;
 
   byNodeEnv({
-    args: getArgs({ program }),
-    env: getEnv({ cwd, env, envFile }),
-    packageManager: getRunningPackageManager({ env, packageManager }),
-    run: getRun({ env }),
+    packageManager: getRunningPackageManager({ packageManager, processEnv }),
+    processEnv: getProcessEnv({ envFile, processCwd, processEnv }),
+    remainingArgv: getRemainingArgv({ program }),
+    runScript: getRunScript({ processEnv }),
   });
 }
 
 export default ({
-  args,
-  cwd = process.cwd(),
-  env = process.env,
   envFile,
   packageManager,
-  run,
+  processCwd = process.cwd(),
+  processEnv = process.env,
+  remainingArgv,
+  runScript,
 }: {
   envFile?: string;
   packageManager?: string;
-  cwd?: string;
-  env?: NodeJS.ProcessEnv;
-  args?: string[];
-  run?: string;
+  processCwd?: string;
+  processEnv?: NodeJS.ProcessEnv;
+  remainingArgv?: string[];
+  runScript?: string;
 } = {}) => {
-  getPreferredPackageManager({ cwd, env, packageManager }).then(
+  getPreferredPackageManager({ packageManager, processCwd, processEnv }).then(
     (preferredPackageManager) => {
       byNodeEnv({
-        args: getArgs({ args }),
-        env: getEnv({ cwd, env, envFile }),
         packageManager: preferredPackageManager,
-        run: getRun({ env, run }),
+        processEnv: getProcessEnv({ envFile, processCwd, processEnv }),
+        remainingArgv: getRemainingArgv({ remainingArgv }),
+        runScript: getRunScript({ processEnv, runScript }),
       });
     },
   );

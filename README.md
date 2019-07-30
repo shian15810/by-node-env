@@ -29,17 +29,17 @@ yarn add by-node-env
 
 ## Features
 
-- [x] Read `NODE_ENV` from `process.env`.
-- [x] Read `NODE_ENV` from **.env** file.
-- [x] Defaults `NODE_ENV` to `development`.
-- [x] Customize `process.env` for each `NODE_ENV`.
-- [x] Clearer, concise **scripts** in **package.json**.
-- [x] No more **Bash** scripting in **package.json**.
-- [x] Works on **Linux**, **macOS**, and **Windows**.
-- [x] Compatible with **npm**, **pnpm**, and **Yarn**.
-- [x] Consistent workflow for any `NODE_ENV`:
-  1. `npm install` or `pnpm install` or `yarn install`.
-  2. `npm start` or `pnpm start` or `yarn start`.
+-   [x] Read `NODE_ENV` from `process.env`.
+-   [x] Read `NODE_ENV` from **.env** file.
+-   [x] Defaults `NODE_ENV` to `development`.
+-   [x] Customize `process.env` for each `NODE_ENV`.
+-   [x] Clearer, concise **scripts** in **package.json**.
+-   [x] No more **Bash** scripting in **package.json**.
+-   [x] Works on **Linux**, **macOS**, and **Windows**.
+-   [x] Compatible with **npm**, **pnpm**, and **Yarn**.
+-   [x] Consistent workflow for any `NODE_ENV`:
+    1. `npm install` or `pnpm install` or `yarn install`.
+    2. `npm start` or `pnpm start` or `yarn start`.
 
 ## Problem
 
@@ -51,16 +51,16 @@ The **package.json** might look like this for those situations mentioned above:
 
 ```json
 {
-  "scripts": {
-    "watch": "webpack -d --watch",
-    "build": "webpack -p",
+    "scripts": {
+        "watch": "webpack -d --watch",
+        "build": "webpack -p",
 
-    "dev": "nodemon src",
-    "prod": "node dist",
+        "dev": "nodemon src",
+        "prod": "node dist",
 
-    "serve": "npm run watch & npm run dev",
-    "start": "npm build && npm run prod"
-  }
+        "serve": "npm run watch & npm run dev",
+        "start": "npm build && npm run prod"
+    }
 }
 ```
 
@@ -72,21 +72,21 @@ Working on multiple projects with different commands can be very confusing and f
 
 ```json
 {
-  "scripts": {
-    "build": "by-node-env",
+    "scripts": {
+        "build": "by-node-env",
 
-    "build:development": "webpack -d --watch",
-    "build:production": "webpack -p",
+        "build:development": "webpack -d --watch",
+        "build:production": "webpack -p",
 
-    "start": "by-node-env",
+        "start": "by-node-env",
 
-    "start:development": "npm build & nodemon src",
-    "start:production": "npm build && node dist"
-  }
+        "start:development": "npm build & nodemon src",
+        "start:production": "npm build && node dist"
+    }
 }
 ```
 
-`npm build` and `npm start` have long been the de facto commands to *build* and *start* a **Node.js** application, respectively.
+`npm build` and `npm start` have long been the de facto commands to _build_ and _start_ a **Node.js** application, respectively.
 
 Besides that, `NODE_ENV` should always be explicitly set as an environment variable for best practice. A lot of popular frameworks expect `NODE_ENV` to be set as well.
 
@@ -114,12 +114,12 @@ The resolved `NODE_ENV` is available as `process.env.NODE_ENV` in your applicati
 
 ```jsonc
 {
-  "scripts": {
-    "start": "by-node-env",                 // 1
+    "scripts": {
+        "start": "by-node-env", // 1
 
-    "start:development": "ts-node src",     // 2a
-    "start:production": "ts-node-dev src"   // 2b
-  }
+        "start:development": "ts-node src", // 2a
+        "start:production": "ts-node-dev src" // 2b
+    }
 }
 ```
 
@@ -139,12 +139,12 @@ NODE_ENV=production
 
 ```jsonc
 {
-  "scripts": {
-    "start": "by-node-env",                 // 1
+    "scripts": {
+        "start": "by-node-env", // 1
 
-    "start:development": "ts-node src",     // 2a
-    "start:production": "ts-node-dev src"   // 2b
-  }
+        "start:development": "ts-node src", // 2a
+        "start:production": "ts-node-dev src" // 2b
+    }
 }
 ```
 
@@ -158,36 +158,36 @@ NODE_ENV=production
 
 ```jsonc
 {
-  "scripts": {
-    // If NODE_ENV is missing, defaults to "development".
-    "build": "by-node-env",
+    "scripts": {
+        // If NODE_ENV is missing, defaults to "development".
+        "build": "by-node-env",
 
-    "build:development": "webpack -d --watch",
-    "build:production": "webpack -p",
-    "build:staging": "webpack -p",
+        "build:development": "webpack -d --watch",
+        "build:production": "webpack -p",
+        "build:staging": "webpack -p",
 
-    // Deployment will not work unless NODE_ENV=production is explicitly set.
-    "deploy": "by-node-env",
+        // Deployment will not work unless NODE_ENV=production is explicitly set.
+        "deploy": "by-node-env",
 
-    "predeploy:production": "docker build -t ${DOCKER_USER}/${DOCKER_PROJECT} .",
-    "deploy:production": "docker push ${DOCKER_USER}/${DOCKER_PROJECT}",
+        "predeploy:production": "docker build -t ${DOCKER_USER}/${DOCKER_PROJECT} .",
+        "deploy:production": "docker push ${DOCKER_USER}/${DOCKER_PROJECT}",
 
-    // "npm start" is _the_ command to start the server across all environments.
-    "start": "by-node-env",
+        // "npm start" is _the_ command to start the server across all environments.
+        "start": "by-node-env",
 
-    "start:development": "npm run build:development",
+        "start:development": "npm run build:development",
 
-    "prestart:production": "npm run build",
-    "start:production": "start-cluster build/server/server.js",
+        "prestart:production": "npm run build",
+        "start:production": "start-cluster build/server/server.js",
 
-    "prestart:staging": "npm run build",
-    "start:staging": "start-cluster build/server/server.js",
+        "prestart:staging": "npm run build",
+        "start:staging": "start-cluster build/server/server.js",
 
-    // Explicitly set NODE_ENV, which is helpful in CI.
-    "test": "NODE_ENV=test by-node-env",
+        // Explicitly set NODE_ENV, which is helpful in CI.
+        "test": "NODE_ENV=test by-node-env",
 
-    "test:test": "mocha"
-  }
+        "test:test": "mocha"
+    }
 }
 ```
 

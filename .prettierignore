@@ -1,0 +1,8 @@
+/.editorconfig
+/.env
+/.gitignore
+/.prettierignore
+/.rts2_cache_*
+/dist
+/LICENSE
+/yarn.lock

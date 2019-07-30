@@ -1,7 +1,7 @@
 import readPkgUp from 'read-pkg-up';
 
-export const getPackageJson = ({ cwd }: { cwd: string }) => {
-  const packageJson = readPkgUp.sync({ cwd });
+export const getPackageJson = ({ processCwd }: { processCwd: string }) => {
+  const packageJson = readPkgUp.sync({ cwd: processCwd });
 
   if (packageJson) {
     return packageJson.package;

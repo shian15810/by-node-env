@@ -2,8 +2,8 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('execa'), require('preferred-pm'), require('which-pm-runs'), require('read-pkg-up'), require('fs'), require('path'), require('dotenv'), require('commander'), require('commander-remaining-args')) :
   typeof define === 'function' && define.amd ? define(['execa', 'preferred-pm', 'which-pm-runs', 'read-pkg-up', 'fs', 'path', 'dotenv', 'commander', 'commander-remaining-args'], factory) :
-  (global.byNodeEnv = factory(global.execa,global.preferredPM,global.whichPMRuns,global.readPkgUp,global.fs,global.path,global.dotenv,global.commander,global.getRemainingArgs));
-}(this, (function (execa,preferredPM,whichPMRuns,readPkgUp,fs,path,dotenv,program,getRemainingArgs) { 'use strict';
+  (global.byNodeEnv = factory(global.execa,global.preferredPM,global.whichPMRuns,global.readPkgUp,global.fs,global.path,global.dotenv,global.commander,global.getUnknownArgs));
+}(this, (function (execa,preferredPM,whichPMRuns,readPkgUp,fs,path,dotenv,program,getUnknownArgs) { 'use strict';
 
   execa = execa && execa.hasOwnProperty('default') ? execa['default'] : execa;
   preferredPM = preferredPM && preferredPM.hasOwnProperty('default') ? preferredPM['default'] : preferredPM;
@@ -13,7 +13,7 @@
   path = path && path.hasOwnProperty('default') ? path['default'] : path;
   dotenv = dotenv && dotenv.hasOwnProperty('default') ? dotenv['default'] : dotenv;
   program = program && program.hasOwnProperty('default') ? program['default'] : program;
-  getRemainingArgs = getRemainingArgs && getRemainingArgs.hasOwnProperty('default') ? getRemainingArgs['default'] : getRemainingArgs;
+  getUnknownArgs = getUnknownArgs && getUnknownArgs.hasOwnProperty('default') ? getUnknownArgs['default'] : getUnknownArgs;
 
   var getPackageJson = function (ref) {
     var processCwd = ref.processCwd;
@@ -44,7 +44,7 @@
       var engines = rest;
       var packageManagers = Object.keys(engines).filter(function (packageManager) { return packageManager; });
 
-      if (packageManagers.length >= 1) {
+      if (packageManagers[0]) {
         return packageManagers[0];
       }
     }
@@ -158,7 +158,7 @@
   var getProgram = function (ref) {
     var processArgv = ref.processArgv;
 
-    program.allowUnknownOption().option('-e, --env-file <path>', 'specify path to .env file').option('-p, --package-manager <pm>', 'specify package manager to run script');
+    program.allowUnknownOption().option('-e, --env-file <path>', 'specify path to .env file').option('-p, --package-manager <pm>', 'specify package manager to run-script');
     var packageJson = getPackageJson({
       processCwd: __dirname
     });
@@ -184,7 +184,7 @@
     }
 
     if (program$$1) {
-      return getRemainingArgs(program$$1);
+      return getUnknownArgs(program$$1);
     }
 
     return [];
