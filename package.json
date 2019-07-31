@@ -1,7 +1,7 @@
 {
   "name": "by-node-env",
   "version": "2.0.0",
-  "description": "Run package.json scripts by NODE_ENV",
+  "description": "Run package.json scripts by NODE_ENV.",
   "keywords": [
     "cross-per-env",
     "development",

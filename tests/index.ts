@@ -9,11 +9,37 @@ const {
 } = process.env;
 
 const configArgv: ReturnType<typeof nopt>['argv'] = JSON.parse(npm_config_argv);
-const runScript = configArgv.original.slice(-1)[0];
+const [runScript] = configArgv.original.slice(-1);
 
-const [lifecycleEvent, nodeEnv] = npm_lifecycle_event.split(':');
-const lifecycleScript = lifecycleEvent.slice(-runScript.length);
+const lifecycleHooks = ['pre', '', 'post'];
 
-assert.equal(runScript, lifecycleScript);
+if (NODE_ENV && runScript.endsWith(`:${NODE_ENV}`)) {
+  const [runScriptEvent, runScriptNodeEnv] = runScript.split(':');
 
-assert.equal(NODE_ENV, nodeEnv);
+  assert.ok(npm_lifecycle_event.endsWith(runScript));
+  assert.equal(runScriptNodeEnv, NODE_ENV);
+
+  const [lifecycleEvent, lifecycleNodeEnv] = npm_lifecycle_event.split(':');
+  const lifecycleHook = lifecycleEvent.slice(
+    0,
+    lifecycleEvent.length - runScriptEvent.length,
+  );
+  const lifecycleScript = lifecycleEvent.slice(-runScriptEvent.length);
+
+  assert.ok(lifecycleHooks.includes(lifecycleHook));
+  assert.equal(lifecycleScript, runScriptEvent);
+  assert.equal(lifecycleNodeEnv, NODE_ENV);
+} else {
+  const runScriptEvent = runScript;
+
+  const [lifecycleEvent, lifecycleNodeEnv] = npm_lifecycle_event.split(':');
+  const lifecycleHook = lifecycleEvent.slice(
+    0,
+    lifecycleEvent.length - runScriptEvent.length,
+  );
+  const lifecycleScript = lifecycleEvent.slice(-runScriptEvent.length);
+
+  assert.ok(lifecycleHooks.includes(lifecycleHook));
+  assert.equal(lifecycleScript, runScriptEvent);
+  assert.equal(lifecycleNodeEnv, NODE_ENV);
+}

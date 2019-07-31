@@ -8,6 +8,6 @@ declare const _default: ({ envFile, packageManager, processCwd, processEnv, rema
     processEnv?: NodeJS.ProcessEnv | undefined;
     remainingArgv?: string[] | undefined;
     runScript?: string | undefined;
-}) => Promise<execa.ExecaSyncReturnValue<string>>;
+}) => Promise<execa.ExecaReturnValue<string>>;
 export default _default;
 //# sourceMappingURL=index.d.ts.map

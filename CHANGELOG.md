@@ -43,3 +43,7 @@
 -   Exported a default function for programmatic use.
 -   Exposed optional `--env-file` and `--package-manager` options via cli.
 -   **Breaking change**: `.env` file is no longer parsed by default if present. It will only be parsed if provided along with `--env-file` option via cli.
+
+## 2.0.1 (2019-07-31)
+
+-   Replaced **Yarn** with **npm**.

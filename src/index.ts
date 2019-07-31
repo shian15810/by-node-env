@@ -26,7 +26,7 @@ const byNodeEnv = ({
   const args = ['run', `${runScript}:${processEnv.NODE_ENV}`, ...remainingArgv];
   const options: execa.SyncOptions = { env: processEnv, stdio: 'inherit' };
 
-  return execa.sync(command, args, options);
+  return execa(command, args, options);
 };
 
 if (require.main === module || !module.parent) {
@@ -37,14 +37,18 @@ if (require.main === module || !module.parent) {
   const program = getProgram({ processArgv });
   const { envFile, packageManager } = program;
 
-  const { exitCode } = byNodeEnv({
+  byNodeEnv({
     packageManager: getRunningPackageManager({ packageManager, processEnv }),
     processEnv: getProcessEnv({ envFile, processCwd, processEnv }),
     remainingArgv: getRemainingArgv({ program }),
     runScript: getRunScript({ processEnv }),
-  });
-
-  process.exitCode = exitCode;
+  })
+    .then((childProcessResult) => {
+      process.exitCode = childProcessResult.exitCode;
+    })
+    .catch((childProcessResult: execa.ExecaError) => {
+      process.exitCode = childProcessResult.exitCode;
+    });
 }
 
 export default ({

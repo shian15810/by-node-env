@@ -217,7 +217,7 @@
       env: processEnv,
       stdio: 'inherit'
     };
-    return execa.sync(command, args, options);
+    return execa(command, args, options);
   };
 
   if (require.main === module || !module.parent) {
@@ -229,7 +229,7 @@
     });
     var envFile = program$1.envFile;
     var packageManager = program$1.packageManager;
-    var ref = byNodeEnv({
+    byNodeEnv({
       packageManager: getRunningPackageManager({
         packageManager: packageManager,
         processEnv: processEnv
@@ -245,9 +245,11 @@
       runScript: getRunScript({
         processEnv: processEnv
       })
+    }).then(function (childProcessResult) {
+      process.exitCode = childProcessResult.exitCode;
+    }).catch(function (childProcessResult) {
+      process.exitCode = childProcessResult.exitCode;
     });
-    var exitCode = ref.exitCode;
-    process.exitCode = exitCode;
   }
 
   var index = (function (ref) {

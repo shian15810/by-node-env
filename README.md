@@ -1,6 +1,6 @@
 # by-node-env
 
-Run **package.json** **scripts** by `NODE_ENV`.
+Run package.json scripts by NODE_ENV.
 
 [![Travis (.com)](https://img.shields.io/travis/com/shian15810/by-node-env.svg)](https://travis-ci.com/shian15810/by-node-env)
 [![npm](https://img.shields.io/npm/v/by-node-env.svg)](https://www.npmjs.com/package/by-node-env)
