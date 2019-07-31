@@ -40,10 +40,13 @@
 
 -   Rewritten in [**TypeScript**](https://www.typescriptlang.org/).
 -   Replaced **npm** with **Yarn**.
+-   Replaced [**cross-spawn**](https://www.npmjs.com/package/cross-spawn) with [**execa**](https://www.npmjs.com/package/execa).
 -   Exported a default function for programmatic use.
+-   Parsed cli options using [**commander**](https://www.npmjs.com/package/commander).
 -   Exposed optional `--env-file` and `--package-manager` options via cli.
 -   **Breaking change**: `.env` file is no longer parsed by default if present. It will only be parsed if provided along with `--env-file` option via cli.
 
 ## 2.0.1 (2019-07-31)
 
+-   Suppressed duplicated cli error thrown by [**execa**](https://www.npmjs.com/package/execa).
 -   Replaced **Yarn** with **npm**.
