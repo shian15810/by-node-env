@@ -67,7 +67,7 @@
   "devDependencies": {
     "@types/commander-remaining-args": "^1.2.0",
     "@types/dotenv": "^6.1.1",
-    "@types/node": "^12.6.8",
+    "@types/node": "^12.7.2",
     "@types/nopt": "^3.0.29",
     "cross-env": "^5.2.0",
     "husky": "^3.0.2",
