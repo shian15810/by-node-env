@@ -61,7 +61,7 @@
     "dotenv": "^8.0.0",
     "execa": "^2.0.3",
     "preferred-pm": "^2.0.0",
-    "read-pkg-up": "^6.0.0",
+    "read-pkg-up": "^7.0.1",
     "which-pm-runs": "^1.0.0"
   },
   "devDependencies": {
