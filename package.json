@@ -65,7 +65,7 @@
     "which-pm-runs": "^1.0.0"
   },
   "devDependencies": {
-    "@types/commander-remaining-args": "^1.2.0",
+    "@types/commander-remaining-args": "^1.2.1",
     "@types/dotenv": "^6.1.1",
     "@types/node": "^12.6.8",
     "@types/nopt": "^3.0.29",
