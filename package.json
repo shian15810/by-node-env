@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "@types/commander-remaining-args": "^1.2.0",
-    "@types/dotenv": "^6.1.1",
+    "@types/dotenv": "^8.2.0",
     "@types/node": "^12.6.8",
     "@types/nopt": "^3.0.29",
     "cross-env": "^5.2.0",
