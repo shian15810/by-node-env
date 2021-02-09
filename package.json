@@ -60,7 +60,7 @@
     "commander-remaining-args": "^1.2.0",
     "dotenv": "^8.0.0",
     "execa": "^2.0.3",
-    "preferred-pm": "^2.0.0",
+    "preferred-pm": "^3.0.3",
     "read-pkg-up": "^6.0.0",
     "which-pm-runs": "^1.0.0"
   },
